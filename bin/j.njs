@@ -13,6 +13,7 @@ program
 	.option('-j, --json', 'emit formatted JSON rather than CSV (all fields text)')
 	.option('-J, --raw-js', 'emit raw JS object rather than CSV (raw numbers)')
 	.option('-X, --xml', 'emit XML rather than CSV')
+	.option('-H, --html', 'emit HTML rather than CSV')
 	.option('-F, --field-sep <sep>', 'CSV field separator', ",")
 	.option('-R, --row-sep <sep>', 'CSV row separator', "\n")
 	.option('--dev', 'development mode')
@@ -81,6 +82,7 @@ if(program.formulae) o= X.utils.get_formulae(ws).join("\n");
 else if(program.json) o= JSON.stringify(J.utils.to_json(w)[target_sheet]);
 else if(program.rawJs) o= JSON.stringify(J.utils.to_json(w,true)[target_sheet]);
 else if(program.xml) o= J.utils.to_xml(w)[target_sheet];
+else if(program.html) o= J.utils.to_html(w)[target_sheet];
 else o= J.utils.to_dsv(w, program.fieldSep, program.rowSep)[target_sheet];
 
 console.log(o);

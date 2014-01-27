@@ -41,12 +41,8 @@ function get_columns(sheet, XL) {
 	columnHeaders = [];
 	for (C = range.s.c; C <= range.e.c; ++C) {
 		val = sheet[XL.utils.encode_cell({c: C, r: range.s.r})];
-		if(val){
-			switch(val.t) {
-				case 's': case 'str': columnHeaders[C] = val.v; break;
-				case 'n': columnHeaders[C] = val.v; break;
-			}
-		}
+		if(!val) continue;
+		columnHeaders[C] = XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
 	}
 	return columnHeaders;
 }
@@ -54,7 +50,7 @@ function get_columns(sheet, XL) {
 function to_html(w) {
 	var XL = w[0], wb = w[1];
 	var json = to_json(w);
-	var tbl = [];
+	var tbl = {};
 	wb.SheetNames.forEach(function(sheet) {
 		var cols = get_columns(wb.Sheets[sheet], XL);
 		var src = "<h3>" + sheet + "</h3>";
@@ -68,7 +64,7 @@ function to_html(w) {
 			src += "</tr>";
 		});
 		src += "</table>";
-		tbl.push(src);
+		tbl[sheet] = src;
 	});
 	return tbl;
 };
