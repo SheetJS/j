@@ -12,6 +12,7 @@ program
 	.option('-S, --formulae', 'print formulae')
 	.option('-j, --json', 'emit formatted JSON rather than CSV (all fields text)')
 	.option('-J, --raw-js', 'emit raw JS object rather than CSV (raw numbers)')
+	.option('-X, --xml', 'emit XML rather than CSV')
 	.option('-F, --field-sep <sep>', 'CSV field separator', ",")
 	.option('-R, --row-sep <sep>', 'CSV row separator', "\n")
 	.option('--dev', 'development mode')
@@ -70,12 +71,16 @@ try {
 	ws = wb.Sheets[target_sheet];
 	if(!ws) throw "Sheet " + target_sheet + " cannot be found";
 } catch(e) {
-	console.error(n + "2csv: error parsing "+filename+" "+target_sheet+": " + e);
+	console.error("j: error parsing "+filename+" "+target_sheet+": " + e);
 	process.exit(4);
 }
 
+var o;
 if(!program.quiet) console.error(target_sheet);
-if(program.formulae) console.log(X.utils.get_formulae(ws).join("\n"));
-else if(program.json) console.log(JSON.stringify(X.utils.sheet_to_row_object_array(ws)));
-else if(program.rawJs) console.log(JSON.stringify(X.utils.sheet_to_row_object_array(ws,{raw:true})));
-else console.log(X.utils.make_csv(ws, {FS:program.fieldSep, RS:program.rowSep}));
+if(program.formulae) o= X.utils.get_formulae(ws).join("\n");
+else if(program.json) o= JSON.stringify(J.utils.to_json(w)[target_sheet]);
+else if(program.rawJs) o= JSON.stringify(J.utils.to_json(w,true)[target_sheet]);
+else if(program.xml) o= J.utils.to_xml(w)[target_sheet];
+else o= J.utils.to_dsv(w, program.fieldSep, program.rowSep)[target_sheet];
+
+console.log(o);

@@ -15,28 +15,24 @@ var readFileSync = function(filename, options) {
 	}
 };
 
-function to_json(w) {
+function to_json(w, raw) {
 	var XL = w[0], workbook = w[1];
 	var result = {};
 	workbook.SheetNames.forEach(function(sheetName) {
-		var roa = XL.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+		var roa = XL.utils.sheet_to_row_object_array(workbook.Sheets[sheetName], raw);
 		if(roa.length > 0) result[sheetName] = roa;
 	});
 	return result;
 }
 
-function to_dsv(w, FS) {
+function to_dsv(w, FS, RS) {
 	var XL = w[0], workbook = w[1];
-	var result = [];
+	var result = {};
 	workbook.SheetNames.forEach(function(sheetName) {
-		var csv = XL.utils.make_csv(workbook.Sheets[sheetName], {FS:FS||","});
-		if(csv.length > 0){
-			result.push("SHEET: " + sheetName);
-			result.push("");
-			result.push(csv);
-		}
+		var csv = XL.utils.make_csv(workbook.Sheets[sheetName], {FS:FS||",",RS:RS||"\n"});
+		if(csv.length > 0) result[sheetName] = csv;
 	});
-	return result.join("\n");
+	return result
 }
 
 function get_columns(sheet, XL) {
@@ -77,6 +73,25 @@ function to_html(w) {
 	return tbl;
 };
 
+var cleanregex = /[^A-Za-z0-9_.]/g
+function to_xml(w) {
+	var json = to_json(w);
+	var lst = {};
+	w[1].SheetNames.forEach(function(sheet) {
+		var js = json[sheet], s = sheet.replace(cleanregex,"");
+		var xml = "";
+		xml += "<" + s + ">";
+		js.forEach(function(r) {
+			xml += "<" + s + "Data>";
+			for(y in r) if(r.hasOwnProperty(y)) xml += "<" + y.replace(cleanregex,"") + ">" + r[y] + "</" +  y.replace(cleanregex,"") + ">";
+			xml += "</" + s + "Data>";
+		});
+		xml += "</" + s + ">";
+		lst[sheet] = xml;
+	});
+	return lst;
+}
+
 module.exports = {
 	XLSX: XLSX,
 	XLS: XLS,
@@ -84,6 +99,7 @@ module.exports = {
 	utils: {
 		to_csv: to_dsv,
 		to_dsv: to_dsv,
+		to_xml: to_xml,
 		to_json: to_json,
 		to_html: to_html
 	},
