@@ -64,7 +64,7 @@ function to_html(w) {
 		src += "</tr></thead>";
 		(json[sheet]||[]).forEach(function(row) {
 			src += "<tr>";
-			cols.forEach(function(c) { src += "<td>" + (typeof row[c] !== "undefined" ? row[c] : "") + "</c>"; });
+			cols.forEach(function(c) { src += "<td>" + (typeof row[c] !== "undefined" ? row[c] : "") + "</td>"; });
 			src += "</tr>";
 		});
 		src += "</table>";

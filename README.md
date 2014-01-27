@@ -49,6 +49,36 @@ $ bin/j.njs --help
   Web Demo: http://oss.sheetjs.com/
 ```
 
+
 ## License
 
 Please consult the attached LICENSE file for details.  All rights not explicitly granted by the Apache 2.0 license are reserved by the Original Author.
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/cb2e495863d0096f50a923515c7331b6 "githalytics.com")](http://githalytics.com/SheetJS/j)
+
+## Using J for diffing XLS/XLSX/XLSM files
+
+Using git textconv, you can use `J` to generate more meaningful diffs!
+
+One-time configuration (same steps in `misc/gitdiff.sh`:
+
+```
+#!/bin/bash
+
+# Define a sheetjs diff type that uses j
+git config --global diff.sheetjs.textconv "j"
+
+# Configure a user .gitattributes file that maps the xls{,x,m} files
+touch ~/.gitattributes
+cat <<EOF >>~/.gitattributes
+*.xlsm diff=sheetjs
+*.xlsx diff=sheetjs
+*.xls diff=sheetjs
+*.XLSM diff=sheetjs
+*.XLSX diff=sheetjs
+*.XLS diff=sheetjs
+EOF
+
+# Set the .gitattributes to be used for all repos on the system:
+git config --global core.attributesfile '~/.gitattributes'
+```
