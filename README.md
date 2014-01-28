@@ -1,6 +1,20 @@
 # J
 
-Simple data wrapper that attempts to wrap [xlsjs](http://npm.im/xlsjs) and [xlsx](http://npm.im/xlsx) to provide a uniform way to access data
+Simple data wrapper that attempts to wrap [xlsjs](http://npm.im/xlsjs) and [xlsx](http://npm.im/xlsx) to provide a uniform way to access data.
+
+Supports XLS, XLSX, XLSM and XLSB files.
+
+Output formats:
+- XML and HTML work with [Excel Web Query](http://office.microsoft.com/en-us/excel-help/get-and-analyze-data-from-the-web-in-excel-HA001054848.aspx)
+- CSV (and other delimited formats such as TSV)
+- JSON
+- Formulae list (e.g. `A1=NOW()`, `A2=A1+3`)
+
+## Installation
+
+```
+npm install -g j
+```
 
 ## Node Library
 
@@ -24,7 +38,7 @@ is the parsed file.
 The node module ships with a binary `j` which has a help message:
 
 ```
-$ bin/j.njs --help
+$ j --help
 
   Usage: j.njs [options] <file> [sheetname]
 
@@ -57,11 +71,11 @@ Please consult the attached LICENSE file for details.  All rights not explicitly
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/cb2e495863d0096f50a923515c7331b6 "githalytics.com")](http://githalytics.com/SheetJS/j)
 
-## Using J for diffing XLS/XLSX/XLSM files
+## Using J for diffing XLS/XLSB/XLSM/XLSX files
 
 Using git textconv, you can use `J` to generate more meaningful diffs!
 
-One-time configuration (same steps in `misc/gitdiff.sh`:
+One-time configuration (`misc/gitdiff.sh`):
 
 ```
 #!/bin/bash
@@ -85,3 +99,13 @@ EOF
 # Set the .gitattributes to be used for all repos on the system:
 git config --global core.attributesfile '~/.gitattributes'
 ```
+
+If you just want to compare formulae (for example, in a sheet using `NOW`):
+
+```
+git config --global diff.sheetjs.textconv "j -S"
+```
+
+
+NOTE: There are some known issues regarding global modules in Windows.  The best
+bet is to `npm install j` in your git directory before diffing.

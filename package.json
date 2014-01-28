@@ -1,9 +1,9 @@
 {
   "name": "j",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "author": "sheetjs",
   "description": "data wrangler",
-  "keywords": [ "xls", "xlsx", "office", "excel", "spreadsheet" ],
+  "keywords": [ "xls", "xlsx", "xlsm", "xlsb", "office", "excel", "spreadsheet" ],
   "bin": {
     "j": "./bin/j.njs"
   },

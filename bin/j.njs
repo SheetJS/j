@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /* j (C) 2013-2014 SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
-var J = require('../');
+var J;
+try { J = require('../'); } catch(e) { J = require('j'); }
 var fs = require('fs'), program = require('commander');
 program
 	.version(J.version)
