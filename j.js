@@ -19,7 +19,7 @@ function to_json(w, raw) {
 	var XL = w[0], workbook = w[1];
 	var result = {};
 	workbook.SheetNames.forEach(function(sheetName) {
-		var roa = XL.utils.sheet_to_row_object_array(workbook.Sheets[sheetName], raw);
+		var roa = XL.utils.sheet_to_row_object_array(workbook.Sheets[sheetName], {raw:raw});
 		if(roa.length > 0) result[sheetName] = roa;
 	});
 	return result;
