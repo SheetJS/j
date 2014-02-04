@@ -35,16 +35,16 @@ function to_dsv(w, FS, RS) {
 	return result
 }
 
-function get_columns(sheet, XL) {
-	var val, rowObject, range, columnHeaders, emptyRow, C;
-	range = XL.utils.decode_range(sheet["!ref"]);
-	columnHeaders = [];
-	for (C = range.s.c; C <= range.e.c; ++C) {
-		val = sheet[XL.utils.encode_cell({c: C, r: range.s.r})];
+function get_cols(sheet, XL) {
+	var val, r, hdr, R, C, _XL = XL || XLS;
+	r = _XL.utils.decode_range(sheet["!ref"]);
+	hdr = [];
+	for (R = r.s.r, C = r.s.c; C <= r.e.c; ++C) {
+		val = sheet[_XL.utils.encode_cell({c:C, r:R})];
 		if(!val) continue;
-		columnHeaders[C] = XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
+		hdr[C] = typeof val.w !== 'undefined' ? val.w : _XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
 	}
-	return columnHeaders;
+	return hdr;
 }
 
 function to_html(w) {
@@ -52,7 +52,7 @@ function to_html(w) {
 	var json = to_json(w);
 	var tbl = {};
 	wb.SheetNames.forEach(function(sheet) {
-		var cols = get_columns(wb.Sheets[sheet], XL);
+		var cols = get_cols(wb.Sheets[sheet], XL);
 		var src = "<h3>" + sheet + "</h3>";
 		src += "<table>";
 		src += "<thead><tr>";
@@ -97,7 +97,8 @@ module.exports = {
 		to_dsv: to_dsv,
 		to_xml: to_xml,
 		to_json: to_json,
-		to_html: to_html
+		to_html: to_html,
+		get_cols: get_cols
 	},
 	version: "XLS " + XLS.version + " ; XLSX " + XLSX.version
 };
