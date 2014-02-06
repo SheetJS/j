@@ -32,7 +32,7 @@ function to_dsv(w, FS, RS) {
 		var csv = XL.utils.make_csv(workbook.Sheets[sheetName], {FS:FS||",",RS:RS||"\n"});
 		if(csv.length > 0) result[sheetName] = csv;
 	});
-	return result
+	return result;
 }
 
 function get_cols(sheet, XL) {
@@ -67,9 +67,29 @@ function to_html(w) {
 		tbl[sheet] = src;
 	});
 	return tbl;
-};
+}
 
-var cleanregex = /[^A-Za-z0-9_.]/g
+var encodings = {
+	'&quot;': '"',
+	'&apos;': "'",
+	'&gt;': '>',
+	'&lt;': '<',
+	'&amp;': '&'
+};
+function evert(obj) {
+	var o = {};
+	Object.keys(obj).forEach(function(k) { if(obj.hasOwnProperty(k)) o[obj[k]] = k; });
+	return o;
+}
+var rencoding = evert(encodings);
+var rencstr = "&<>'\"".split("");
+function escapexml(text){
+	var s = text + '';
+	rencstr.forEach(function(y){s=s.replace(new RegExp(y,'g'), rencoding[y]);});
+	return s;
+}
+
+var cleanregex = /[^A-Za-z0-9_.:]/g;
 function to_xml(w) {
 	var json = to_json(w);
 	var lst = {};
@@ -79,13 +99,18 @@ function to_xml(w) {
 		xml += "<" + s + ">";
 		js.forEach(function(r) {
 			xml += "<" + s + "Data>";
-			for(y in r) if(r.hasOwnProperty(y)) xml += "<" + y.replace(cleanregex,"") + ">" + r[y] + "</" +  y.replace(cleanregex,"") + ">";
+			for(var y in r) if(r.hasOwnProperty(y)) xml += "<" + y.replace(cleanregex,"") + ">" + escapexml(r[y]) + "</" +  y.replace(cleanregex,"") + ">";
 			xml += "</" + s + "Data>";
 		});
 		xml += "</" + s + ">";
 		lst[sheet] = xml;
 	});
 	return lst;
+}
+
+function to_clit(w, s) {
+	var t = to_dsv(w, "\u2603","\u2604")[s].split("\u2604").map(function(s) { return s.split("\u2603").map(function(k) { return k.replace(/^"/,"").replace(/"$/,""); }); });
+	return t;
 }
 
 module.exports = {
@@ -98,6 +123,7 @@ module.exports = {
 		to_xml: to_xml,
 		to_json: to_json,
 		to_html: to_html,
+		to_clit: to_clit,
 		get_cols: get_cols
 	},
 	version: "XLS " + XLS.version + " ; XLSX " + XLSX.version
