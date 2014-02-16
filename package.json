@@ -1,6 +1,6 @@
 {
   "name": "j",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "author": "sheetjs",
   "description": "data wrangler",
   "keywords": [ "xls", "xlsx", "xlsm", "xlsb", "office", "excel", "spreadsheet" ],
@@ -11,8 +11,8 @@
   "repository": { "type":"git", "url":"https://github.com/SheetJS/j.git" },
   "license": "Apache-2.0",
   "dependencies": {
-    "xlsjs": "~0.6.7",
-    "xlsx": "~0.5.5",
+    "xlsjs": "~0.6.8",
+    "xlsx": "~0.5.7",
     "commander":""
   }
 }
