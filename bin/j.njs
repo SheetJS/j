@@ -46,12 +46,18 @@ if(!fs.existsSync(filename)) {
 	process.exit(2);
 }
 
-if(program.dev) J.XLS.verbose = J.XLSX.verbose = 2;
+var opts = {}, w, X, wb;
+if(program.listSheets) opts.bookSheets = true;
 
-var w, X, wb;
-if(program.dev) { w = J.readFile(filename); X = w[0]; wb = w[1] }
+if(program.dev) {
+	J.XLS.verbose = J.XLSX.verbose = 2;
+	opts.WTF = true;
+	w = J.readFile(filename, opts);
+	X = w[0]; wb = w[1];
+}
 else try {
-	w = J.readFile(filename); X = w[0]; wb = w[1];
+	w = J.readFile(filename, opts);
+	X = w[0]; wb = w[1];
 } catch(e) {
 	var msg = (program.quiet) ? "" : "j: error parsing ";
 	msg += filename + ": " + e;
@@ -61,12 +67,12 @@ else try {
 if(program.read) process.exit(0);
 
 if(program.listSheets) {
-	console.log(wb.SheetNames.join("\n"));
+	console.log((wb.SheetNames||[]).join("\n"));
 	process.exit(0);
 }
 
 var target_sheet = sheetname || '';
-if(target_sheet === '') target_sheet = wb.SheetNames[0];
+if(target_sheet === '') target_sheet = (wb.SheetNames||[""])[0];
 
 var ws;
 try {

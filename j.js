@@ -1,5 +1,6 @@
 /* j -- (C) 2013-2014 SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
+/*jshint node:true */
 var XLSX = require('xlsx');
 var XLS = require('xlsjs');
 var fs = require('fs');
@@ -7,9 +8,9 @@ var readFileSync = function(filename, options) {
 	var f = fs.readFileSync(filename);
 	switch(f[0]) {
 		/* CFB container */
-		case 0xd0: return [XLS, XLS.readFile(filename)];
+		case 0xd0: return [XLS, XLS.readFile(filename, options)];
 		/* Zip container */
-		case 0x50: return [XLSX, XLSX.readFile(filename)];
+		case 0x50: return [XLSX, XLSX.readFile(filename, options)];
 		/* Unknown */
 		default: return [undefined, f];
 	}
@@ -37,8 +38,9 @@ function to_dsv(w, FS, RS) {
 
 function get_cols(sheet, XL) {
 	var val, r, hdr, R, C, _XL = XL || XLS;
-	r = _XL.utils.decode_range(sheet["!ref"]);
 	hdr = [];
+	if(!sheet["!ref"]) return hdr;
+	r = _XL.utils.decode_range(sheet["!ref"]);
 	for (R = r.s.r, C = r.s.c; C <= r.e.c; ++C) {
 		val = sheet[_XL.utils.encode_cell({c:C, r:R})];
 		if(!val) continue;
@@ -97,7 +99,7 @@ function to_xml(w) {
 		var js = json[sheet], s = sheet.replace(cleanregex,"");
 		var xml = "";
 		xml += "<" + s + ">";
-		js.forEach(function(r) {
+		(js||[]).forEach(function(r) {
 			xml += "<" + s + "Data>";
 			for(var y in r) if(r.hasOwnProperty(y)) xml += "<" + y.replace(cleanregex,"") + ">" + escapexml(r[y]) + "</" +  y.replace(cleanregex,"") + ">";
 			xml += "</" + s + "Data>";
