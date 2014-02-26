@@ -1,6 +1,6 @@
 {
   "name": "j",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "author": "sheetjs",
   "description": "data wrangler",
   "keywords": [ "xls", "xlsx", "xlsm", "xlsb", "office", "excel", "spreadsheet" ],
@@ -8,11 +8,19 @@
     "j": "./bin/j.njs"
   },
   "main": "./j",
-  "repository": { "type":"git", "url":"https://github.com/SheetJS/j.git" },
-  "license": "Apache-2.0",
   "dependencies": {
-    "xlsjs": "~0.6.9",
+    "xlsjs": ">=0.6.9-b",
     "xlsx": "~0.5.10",
     "commander":""
-  }
+  },
+  "devDependencies": {
+    "mocha":""
+  },
+  "repository": { "type":"git", "url":"https://github.com/SheetJS/j.git" },
+  "scripts": {
+    "test": "make mocha"
+  },
+  "bugs": { "url": "https://github.com/SheetJS/j/issues" },
+  "license": "Apache-2.0",
+  "engines": { "node": ">=0.8" }
 }

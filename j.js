@@ -9,6 +9,8 @@ var readFileSync = function(filename, options) {
 	switch(f[0]) {
 		/* CFB container */
 		case 0xd0: return [XLS, XLS.readFile(filename, options)];
+		/* XML container (assumed 2003/2004) */
+		case 0x3c: return [XLS, XLS.readFile(filename, options)];
 		/* Zip container */
 		case 0x50: return [XLSX, XLSX.readFile(filename, options)];
 		/* Unknown */
