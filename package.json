@@ -1,6 +1,6 @@
 {
   "name": "j",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "author": "sheetjs",
   "description": "data wrangler",
   "keywords": [ "xls", "xlsx", "xlsm", "xlsb", "office", "excel", "spreadsheet" ],
@@ -9,7 +9,7 @@
   },
   "main": "./j",
   "dependencies": {
-    "xlsjs": ">=0.6.9-b",
+    "xlsjs": ">=0.6.9-c",
     "xlsx": "~0.5.10",
     "commander":""
   },

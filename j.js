@@ -18,6 +18,16 @@ var readFileSync = function(filename, options) {
 	}
 };
 
+function to_formulae(w) {
+	var XL = w[0], workbook = w[1];
+	var result = {};
+	workbook.SheetNames.forEach(function(sheetName) {
+		var f = XL.utils.get_formulae(workbook.Sheets[sheetName]);
+		if(f.length > 0) result[sheetName] = f;
+	});
+	return result;
+}
+
 function to_json(w, raw) {
 	var XL = w[0], workbook = w[1];
 	var result = {};
@@ -127,6 +137,7 @@ module.exports = {
 		to_xml: to_xml,
 		to_json: to_json,
 		to_html: to_html,
+		to_formulae: to_formulae,
 		to_clit: to_clit,
 		get_cols: get_cols
 	},

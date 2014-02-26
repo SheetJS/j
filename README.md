@@ -1,8 +1,18 @@
 # J
 
-Simple data wrapper that attempts to wrap [xlsjs](http://npm.im/xlsjs) and [xlsx](http://npm.im/xlsx) to provide a uniform way to access data.
+Simple data wrapper that attempts to wrap [xlsjs](http://npm.im/xlsjs) and [xlsx](http://npm.im/xlsx) to provide a uniform way to access data from Excel files.
 
-Supports XLS, XLSX, XLSM and XLSB files.
+Excel files are parsed based on the content (not by filename).  For example, CSV files can be renamed to .XLS and excel will do the right thing.
+
+Supported Formats:
+
+| Format                  | Library |
+| :---------------------- | :------ |
+| XLS (BIFF8, 97-2003)    | JS-XLS  |
+| XLSX (2007+)            | JS-XLSX |
+| XLSM (2007+ w/macros)   | JS-XLSX |
+| XLSB (2007+ binary)     | JS-XLSX |
+| XML (2003/2004, basic)  | JS-XLS  |
 
 Output formats:
 - XML and HTML work with [Excel Web Query](http://office.microsoft.com/en-us/excel-help/get-and-analyze-data-from-the-web-in-excel-HA001054848.aspx)

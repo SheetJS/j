@@ -85,7 +85,7 @@ try {
 
 var o;
 if(!program.quiet) console.error(target_sheet);
-if(program.formulae) o= X.utils.get_formulae(ws).join("\n");
+if(program.formulae) o= J.utils.to_formulae(w)[target_sheet].join("\n");
 else if(program.json) o= JSON.stringify(J.utils.to_json(w)[target_sheet]);
 else if(program.rawJs) o= JSON.stringify(J.utils.to_json(w,true)[target_sheet]);
 else if(program.xml) o= J.utils.to_xml(w)[target_sheet];
