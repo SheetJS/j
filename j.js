@@ -108,12 +108,12 @@ function to_xml(w) {
 	var json = to_json(w);
 	var lst = {};
 	w[1].SheetNames.forEach(function(sheet) {
-		var js = json[sheet], s = sheet.replace(cleanregex,"");
+		var js = json[sheet], s = sheet.replace(cleanregex,"").replace(/^([0-9])/,"_$1");
 		var xml = "";
 		xml += "<" + s + ">";
 		(js||[]).forEach(function(r) {
 			xml += "<" + s + "Data>";
-			for(var y in r) if(r.hasOwnProperty(y)) xml += "<" + y.replace(cleanregex,"") + ">" + escapexml(r[y]) + "</" +  y.replace(cleanregex,"") + ">";
+			for(var y in r) if(r.hasOwnProperty(y)) xml += "<" + y.replace(cleanregex,"").replace(/^([0-9])/,"_$1") + ">" + escapexml(r[y]) + "</" +  y.replace(cleanregex,"").replace(/^([0-9])/,"_$1") + ">";
 			xml += "</" + s + "Data>";
 		});
 		xml += "</" + s + ">";
