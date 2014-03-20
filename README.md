@@ -81,6 +81,8 @@ Please consult the attached LICENSE file for details.  All rights not explicitly
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/cb2e495863d0096f50a923515c7331b6 "githalytics.com")](http://githalytics.com/SheetJS/j)
 
+[![Build Status](https://travis-ci.org/SheetJS/j.png?branch=master)](https://travis-ci.org/SheetJS/j)
+
 ## Using J for diffing XLS/XLSB/XLSM/XLSX files
 
 Using git textconv, you can use `J` to generate more meaningful diffs!

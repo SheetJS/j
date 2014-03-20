@@ -1,3 +1,4 @@
+/* j -- (C) 2013-2014 SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
 var J;
 var fs = require('fs'), assert = require('assert');
@@ -21,3 +22,18 @@ describe('should parse test files', function() {
 		});
 	});
 });
+
+function cmparr(x) { for(var i=1; i!=x.length; ++i) for(var j=0; j<i; ++j) assert.deepEqual(x[i], x[j]); }
+
+var mfopts = opts;
+var mft = fs.readFileSync('multiformat.lst','utf-8').split("\n");
+mft.forEach(function(x) { if(x[0]!="#") describe('MFT ' + x, function() {
+	var fil = {}, f = [], r = x.split(/\s+/);
+	if(r.length < 3) return;
+	it('should parse all', function() {
+		for(var j = 1; j != r.length; ++j) f[j-1] = J.readFile(dir + r[0] + r[j], mfopts);
+	});
+	it('should have the same sheetnames', function() {
+		cmparr(f.map(function(x) { return x[1].SheetNames; }));
+	});
+}); });
