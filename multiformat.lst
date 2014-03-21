@@ -1,3 +1,4 @@
+AutoFilter              	.xls .xlsb .xlsx .xml
 RkNumber                	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
 comments_stress_test    	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
 custom_properties       	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
