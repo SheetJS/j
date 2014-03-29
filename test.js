@@ -23,7 +23,7 @@ describe('should parse test files', function() {
 	});
 });
 
-function cmparr(x){ console.log(x); for(var i=1;i!=x.length;++i) assert.deepEqual(x[0], x[i]); }
+function cmparr(x){ for(var i=1;i!=x.length;++i) assert.deepEqual(x[0], x[i]); }
 
 var mfopts = opts;
 var mft = fs.readFileSync('multiformat.lst','utf-8').split("\n");
@@ -32,15 +32,14 @@ mft.forEach(function(x) { if(x[0]!="#") describe('MFT ' + x, function() {
 	if(r.length < 3) return;
 	it('should parse all', function() {
 		for(var j = 1; j != r.length; ++j) f[j-1] = J.readFile(dir + r[0] + r[j], mfopts);
-		console.log(f.length);
 	});
 	it('should have the same sheetnames', function() {
 		cmparr(f.map(function(x) { return x[1].SheetNames; }));
-		console.log(f.length);
 	});
 	it.skip('should have the same ranges', function() {
 		f[0][1].SheetNames.forEach(function(s) {
 			var ss = f.map(function(x) { return x[1].Sheets[s]; });
+			console.log(ss.map(function(s) { return s['!ref']; }));
 			cmparr(ss.map(function(s) { return s['!ref']; }));
 		});
 	});

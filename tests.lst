@@ -2,6 +2,10 @@ AutoFilter.xls
 AutoFilter.xlsb
 AutoFilter.xlsx
 AutoFilter.xml
+BlankSheetTypes.xls
+BlankSheetTypes.xlsb
+BlankSheetTypes.xlsm
+BlankSheetTypes.xml
 LONumbers-2010.xls
 LONumbers-2010.xls.xml
 LONumbers-2010.xlsx
@@ -656,6 +660,10 @@ openpyxl_r_formulae.xlsx
 openpyxl_r_null_archive.xlsx.pending
 openpyxl_r_null_file.xlsx.pending
 openpyxl_r_vba-test.xlsm
+pivot_table_named_range.xls
+pivot_table_named_range.xlsb
+pivot_table_named_range.xlsx
+pivot_table_named_range.xml
 pivot_table_test.xls
 pivot_table_test.xlsb
 pivot_table_test.xlsm
@@ -719,6 +727,7 @@ roo_link.xlsx
 roo_matrix.xls
 roo_named_cells.xls
 roo_named_cells.xlsx
+roo_numbers-export.xlsx
 roo_numbers1.xls
 roo_numbers1.xlsx
 roo_numbers1.xml
