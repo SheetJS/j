@@ -17,6 +17,10 @@ LONumbers-2011.xlsx.xml
 LONumbers.xls
 LONumbers.xls.xml
 LONumbers.xlsx
+NumberFormatCondition.xls
+NumberFormatCondition.xlsb
+NumberFormatCondition.xlsm
+NumberFormatCondition.xml
 RkNumber.xls
 RkNumber.xls.xml
 RkNumber.xlsb
@@ -667,6 +671,7 @@ pivot_table_named_range.xml
 pivot_table_test.xls
 pivot_table_test.xlsb
 pivot_table_test.xlsm
+protect_stress_test_xml.xml
 pyExcelerator_P-0508-0000507647-3280-5298.xls
 pyExcelerator_chart1v8.xls
 pyExcelerator_excel2003.xls
