@@ -1,9 +1,11 @@
 AutoFilter              	.xls .xlsb .xlsx .xml
 #BlankSheetTypes         	.xls .xlsb .xlsx .xml
 RkNumber                	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
+#calendar_stress_test    	.xls .xlsb .xlsx .xml
 comments_stress_test    	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
 custom_properties       	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
 #formula_stress_test     	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
+hyperlink_stress_test_2011	.xls .xlsb .xlsx .xml
 #large_strings           	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
 merge_cells             	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
 named_ranges_2011       	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
@@ -11,4 +13,5 @@ number_format           	.xls .xlsb .xlsm .xls.xml .xlsb.xml .xlsm.xml
 pivot_table_named_range 	.xls .xlsb .xlsx .xml
 pivot_table_test        	.xls .xlsb .xlsm
 rich_text_stress        	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
+text_and_numbers        	.xls .xlsb .xlsx .xml
 xlsx-stream-d-date-cell 	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml

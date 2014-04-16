@@ -146,6 +146,7 @@ apachepoi_47089.xlsm
 apachepoi_47090.xlsx
 apachepoi_47154.xls
 apachepoi_47251.xls
+apachepoi_47251_1.xls
 apachepoi_47504.xlsx
 apachepoi_47668.xlsx
 apachepoi_47701.xls
@@ -465,6 +466,10 @@ apachepoi_workbookProtection_worksheet_protected.xlsx
 apachepoi_xlsx-jdbc.xlsx
 apachepoi_xor-encryption-abc.xls.pending
 apachepoi_yearfracExamples.xls
+calendar_stress_test.xls.pending
+calendar_stress_test.xlsb.pending
+calendar_stress_test.xlsx
+calendar_stress_test.xml
 comments_stress_test.xls
 comments_stress_test.xls.xml
 comments_stress_test.xlsb
@@ -494,6 +499,10 @@ formula_stress_test.xlsb
 formula_stress_test.xlsb.xml
 formula_stress_test.xlsx
 formula_stress_test.xlsx.xml
+hyperlink_stress_test_2011.xls
+hyperlink_stress_test_2011.xlsb
+hyperlink_stress_test_2011.xlsx
+hyperlink_stress_test_2011.xml
 interview.xlsx
 interview.xlsx.xml
 issue.xlsx
@@ -777,6 +786,10 @@ spreadsheet-parsexlsx_bug-6-2.xlsx
 spreadsheet-parsexlsx_bug-6.xlsx
 spreadsheet-parsexlsx_bug-7.xlsx
 spreadsheet-parsexlsx_bug-8.xlsx
+text_and_numbers.xls
+text_and_numbers.xlsb
+text_and_numbers.xlsx
+text_and_numbers.xml
 time_stress_test_1.xlsb
 xlrd_Formate.xls
 xlrd_formula_test_names.xls
