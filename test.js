@@ -16,7 +16,7 @@ var files = (fs.existsSync('tests.lst') ? fs.readFileSync('tests.lst', 'utf-8').
 var dir = "./test_files/";
 
 files.forEach(function(x) {
-	describe(x.replace(/\.pending/,""), function() {
+	if(fs.existsSync(dir + x.replace(/\.(pending|nowrite)/, ""))) describe(x.replace(/\.pending/,""), function() {
 		var wb, wbxlsx, wbxlsm, wbxlsb;
 		before(function() { if(x.substr(-8) !== ".pending") wb = J.readFile(dir + x, opts); });
 		it('should parse', x.substr(-8) == ".pending" ? null : function() {});
