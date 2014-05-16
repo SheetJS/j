@@ -469,7 +469,7 @@ apachepoi_yearfracExamples.xls
 calendar_stress_test.xls.pending
 calendar_stress_test.xlsb.pending
 calendar_stress_test.xlsx
-calendar_stress_test.xml
+calendar_stress_test.xml.nowrite
 comments_stress_test.xls
 comments_stress_test.xls.xml
 comments_stress_test.xlsb
@@ -612,12 +612,12 @@ jxls-src_report.xls
 jxls-src_report_output.xls
 jxls-src_rowstyle.xls
 jxls-src_rowstyle_output.xls
-large_strings.xls
-large_strings.xls.xml
-large_strings.xlsb
-large_strings.xlsb.xml
-large_strings.xlsx
-large_strings.xlsx.xml
+large_strings.xls.nowrite
+large_strings.xls.xml.nowrite
+large_strings.xlsb.nowrite
+large_strings.xlsb.xml.nowrite
+large_strings.xlsx.nowrite
+large_strings.xlsx.xml.nowrite
 merge_cells.xls
 merge_cells.xls.xml
 merge_cells.xlsb
@@ -700,8 +700,8 @@ roo_1900_base.xlsx
 roo_1904_base.xls
 roo_1904_base.xlsx
 roo_Bibelbund.xls
-roo_Bibelbund.xlsx
-roo_Bibelbund.xml
+roo_Bibelbund.xlsx.nowrite
+roo_Bibelbund.xml.nowrite
 roo_Pfand_from_windows_phone.xlsx.pending
 roo_bad_excel_date.xls
 roo_bbu.xls
@@ -790,7 +790,7 @@ text_and_numbers.xls
 text_and_numbers.xlsb
 text_and_numbers.xlsx
 text_and_numbers.xml
-time_stress_test_1.xlsb
+time_stress_test_1.xlsb.pending
 xlrd_Formate.xls
 xlrd_formula_test_names.xls
 xlrd_formula_test_sjmachin.xls

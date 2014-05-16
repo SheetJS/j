@@ -4,7 +4,7 @@ var J;
 var fs = require('fs'), assert = require('assert');
 describe('source',function(){it('should load',function(){J=require('./');});});
 
-var opts = {};
+var opts = {cellNF:true};
 if(process.env.WTF) opts.WTF = true;
 var ex = [".xls",".xml",".xlsx",".xlsm",".xlsb"];
 if(process.env.FMTS) ex=process.env.FMTS.split(":").map(function(x){return x[0]==="."?x:"."+x;});
@@ -15,10 +15,25 @@ var files = (fs.existsSync('tests.lst') ? fs.readFileSync('tests.lst', 'utf-8').
 
 var dir = "./test_files/";
 
-describe('should parse test files', function() {
-	files.forEach(function(x) {
-		it(x, x.substr(-8) == ".pending" ? null : function() {
-			var wb = J.readFile(dir + x, opts);
+files.forEach(function(x) {
+	describe(x.replace(/\.pending/,""), function() {
+		var wb, wbxlsx, wbxlsm, wbxlsb;
+		before(function() { if(x.substr(-8) !== ".pending") wb = J.readFile(dir + x, opts); });
+		it('should parse', x.substr(-8) == ".pending" ? null : function() {});
+		
+		it('should round-trip XLSX', x.substr(-8) == ".pending" || x.substr(-8) == ".nowrite" ? null : function() {
+			fs.writeFileSync(dir + x + "__.xlsx", J.utils.to_xlsx(wb, {}));
+			wbxlsx = J.readFile(dir + x + "__.xlsx", opts);
+		});
+
+		it('should round-trip XLSM', x.substr(-8) == ".pending" || x.substr(-8) == ".nowrite"  ? null : function() {
+			fs.writeFileSync(dir + x + "__.xlsm", J.utils.to_xlsm(wb, {}));
+			wbxlsm = J.readFile(dir + x + "__.xlsm", opts);
+		});
+
+		it.skip('should round-trip XLSB', x.substr(-8) == ".pending" || x.substr(-8) == ".nowrite" ? null : function() {
+			fs.writeFileSync(dir + x + "__.xlsb", J.utils.to_xlsb(wb, {}));
+			wbxlsb = J.readFile(dir + x + "__.xlsb", opts);
 		});
 	});
 });

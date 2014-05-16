@@ -127,6 +127,19 @@ function to_clit(w, s) {
 	return t;
 }
 
+function to_xlsx_factory(t) {
+	return function(w, o) {
+		o = o || {}; o.bookType = t;
+		if(typeof o.bookSST === 'undefined') o.bookSST = true;
+		if(typeof o.type === 'undefined') o.type = 'buffer';
+		return XLSX.write(w[1], o);
+	}
+}
+
+var to_xlsx = to_xlsx_factory('xlsx');
+var to_xlsm = to_xlsx_factory('xlsm');
+var to_xlsb = to_xlsx_factory('xlsb');
+
 module.exports = {
 	XLSX: XLSX,
 	XLS: XLS,
@@ -135,6 +148,9 @@ module.exports = {
 		to_csv: to_dsv,
 		to_dsv: to_dsv,
 		to_xml: to_xml,
+		to_xlsx: to_xlsx,
+		to_xlsm: to_xlsm,
+		to_xlsb: to_xlsb,
 		to_json: to_json,
 		to_html: to_html,
 		to_formulae: to_formulae,

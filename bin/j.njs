@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* j (C) 2013-2014 SheetJS -- http://sheetjs.com */
-/* vim: set ts=2: */
+/* vim: set ts=2 ft=javascript: */
 var J;
 try { J = require('../'); } catch(e) { J = require('j'); }
 var fs = require('fs'), program = require('commander');
@@ -10,18 +10,24 @@ program
 	.option('-f, --file <file>', 'use specified workbook')
 	.option('-s, --sheet <sheet>', 'print specified sheet (default first sheet)')
 	.option('-l, --list-sheets', 'list sheet names and exit')
+	.option('-o, --output <file>', 'output to specified file')
+	/*.option('-B, --xlsb', 'emit XLSB to <sheetname> or <file>.xlsb') */
+	.option('-M, --xlsm', 'emit XLSM to <sheetname> or <file>.xlsm')
+	.option('-X, --xlsx', 'emit XLSX to <sheetname> or <file>.xlsx')
 	.option('-S, --formulae', 'print formulae')
-	.option('-j, --json', 'emit formatted JSON rather than CSV (all fields text)')
-	.option('-J, --raw-js', 'emit raw JS object rather than CSV (raw numbers)')
-	.option('-X, --xml', 'emit XML rather than CSV')
-	.option('-H, --html', 'emit HTML rather than CSV')
+	.option('-j, --json', 'emit formatted JSON (all fields text)')
+	.option('-J, --raw-js', 'emit raw JS object (raw numbers)')
+	.option('-x, --xml', 'emit XML')
+	.option('-H, --html', 'emit HTML')
 	.option('-F, --field-sep <sep>', 'CSV field separator', ",")
 	.option('-R, --row-sep <sep>', 'CSV row separator', "\n")
+	.option('-n, --sheet-rows <num>', 'Number of rows to process (0=all rows)')
 	.option('--dev', 'development mode')
 	.option('--read', 'read but do not print out contents')
 	.option('-q, --quiet', 'quiet mode');
 
 program.on('--help', function() {
+	console.log('  Default output format is CSV');
 	console.log('  Support email: dev@sheetjs.com');
 	console.log('  Web Demo: http://oss.sheetjs.com/');
 });
@@ -48,7 +54,11 @@ if(!fs.existsSync(filename)) {
 
 var opts = {}, w, X, wb;
 if(program.listSheets) opts.bookSheets = true;
-
+if(program.sheetRows) opts.sheetRows = program.sheetRows;
+if(program.xlsx || program.xlsm || program.xlsb) {
+	opts.cellNF = true;
+	if(program.output) sheetname = program.output;
+}
 if(program.dev) {
 	J.XLS.verbose = J.XLSX.verbose = 2;
 	opts.WTF = true;
@@ -71,6 +81,12 @@ if(program.listSheets) {
 	process.exit(0);
 }
 
+var wopts = {WTF:opts.WTF};
+wopts.bookType = program.xlsm ? "xlsm" : program.xlsb ? "xlsb" : "xlsx"
+if(program.xlsx) return fs.writeFileSync(sheetname || (filename + ".xlsx"), J.utils.to_xlsx(w, wopts));
+if(program.xlsm) return fs.writeFileSync(sheetname || (filename + ".xlsm"), J.utils.to_xlsm(w, wopts));
+if(program.xlsb) return fs.writeFileSync(sheetname || (filename + ".xlsb"), J.utils.to_xlsb(w, wopts));
+
 var target_sheet = sheetname || '';
 if(target_sheet === '') target_sheet = (wb.SheetNames||[""])[0];
 
@@ -83,13 +99,14 @@ try {
 	process.exit(4);
 }
 
-var o;
+var oo = "";
 if(!program.quiet) console.error(target_sheet);
-if(program.formulae) o= J.utils.to_formulae(w)[target_sheet].join("\n");
-else if(program.json) o= JSON.stringify(J.utils.to_json(w)[target_sheet]);
-else if(program.rawJs) o= JSON.stringify(J.utils.to_json(w,true)[target_sheet]);
-else if(program.xml) o= J.utils.to_xml(w)[target_sheet];
-else if(program.html) o= J.utils.to_html(w)[target_sheet];
-else o= J.utils.to_dsv(w, program.fieldSep, program.rowSep)[target_sheet];
+if(program.formulae) oo = J.utils.to_formulae(w)[target_sheet].join("\n");
+else if(program.json) oo = JSON.stringify(J.utils.to_json(w)[target_sheet]);
+else if(program.rawJs) oo = JSON.stringify(J.utils.to_json(w,true)[target_sheet]);
+else if(program.xml) oo = J.utils.to_xml(w)[target_sheet];
+else if(program.html) oo = J.utils.to_html(w)[target_sheet];
+else oo = J.utils.to_dsv(w, program.fieldSep, program.rowSep)[target_sheet];
 
-console.log(o);
+if(program.output) fs.writeFileSync(program.output, oo);
+else console.log(oo);
