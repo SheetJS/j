@@ -88,6 +88,8 @@ Please consult the attached LICENSE file for details.  All rights not explicitly
 
 [![Build Status](https://travis-ci.org/SheetJS/j.png?branch=master)](https://travis-ci.org/SheetJS/j)
 
+[![Coverage Status](https://coveralls.io/repos/SheetJS/j/badge.png)](https://coveralls.io/r/SheetJS/j)
+
 ## Using J for diffing XLS/XLSB/XLSM/XLSX files
 
 Using git textconv, you can use `J` to generate more meaningful diffs!

@@ -18,9 +18,16 @@ var dir = "./test_files/";
 files.forEach(function(x) {
 	if(fs.existsSync(dir + x.replace(/\.(pending|nowrite)/, ""))) describe(x.replace(/\.pending/,""), function() {
 		var wb, wbxlsx, wbxlsm, wbxlsb;
-		before(function() { if(x.substr(-8) !== ".pending") wb = J.readFile(dir + x, opts); });
+		before(function() { if(x.substr(-8) !== ".pending") wb = J.readFile(dir + x.replace(/\.nowrite/,""), opts); });
 		it('should parse', x.substr(-8) == ".pending" ? null : function() {});
-		
+		it('should generate files', x.substr(-8) == ".pending" ? null : function() {
+			J.utils.to_formulae(wb);
+			J.utils.to_json(wb, true);
+			J.utils.to_json(wb, false);
+			J.utils.to_dsv(wb,",", "\n");
+			J.utils.to_html(wb);
+			J.utils.to_xml(wb);
+		});
 		it('should round-trip XLSX', x.substr(-8) == ".pending" || x.substr(-8) == ".nowrite" ? null : function() {
 			fs.writeFileSync(dir + x + "__.xlsx", J.utils.to_xlsx(wb, {}));
 			wbxlsx = J.readFile(dir + x + "__.xlsx", opts);
@@ -51,10 +58,9 @@ mft.forEach(function(x) { if(x[0]!="#") describe('MFT ' + x, function() {
 	it('should have the same sheetnames', function() {
 		cmparr(f.map(function(x) { return x[1].SheetNames; }));
 	});
-	it.skip('should have the same ranges', function() {
+	it('should have the same ranges', function() {
 		f[0][1].SheetNames.forEach(function(s) {
 			var ss = f.map(function(x) { return x[1].Sheets[s]; });
-			console.log(ss.map(function(s) { return s['!ref']; }));
 			cmparr(ss.map(function(s) { return s['!ref']; }));
 		});
 	});

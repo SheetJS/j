@@ -122,11 +122,6 @@ function to_xml(w) {
 	return lst;
 }
 
-function to_clit(w, s) {
-	var t = to_dsv(w, "\u2603","\u2604")[s].split("\u2604").map(function(s) { return s.split("\u2603").map(function(k) { return k.replace(/^"/,"").replace(/"$/,""); }); });
-	return t;
-}
-
 function to_xlsx_factory(t) {
 	return function(w, o) {
 		o = o || {}; o.bookType = t;
@@ -154,7 +149,6 @@ module.exports = {
 		to_json: to_json,
 		to_html: to_html,
 		to_formulae: to_formulae,
-		to_clit: to_clit,
 		get_cols: get_cols
 	},
 	version: "XLS " + XLS.version + " ; XLSX " + XLSX.version
