@@ -13,6 +13,9 @@ TESTFMT=$(patsubst %,test_%,$(FMT))
 $(TESTFMT): test_%:
 	FMTS=$* make test
 
+.PHONY: 2011
+2011:
+	./tests/open_excel_2011.sh
 
 .PHONY: lint
 lint: $(TARGET)
