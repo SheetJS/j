@@ -38,10 +38,10 @@ files.forEach(function(x) {
 			wbxlsm = J.readFile(dir + x + "__.xlsm", opts);
 		});
 
-		/*it.skip('should round-trip XLSB', x.substr(-8) == ".pending" || x.substr(-8) == ".nowrite" ? null : function() {
+		it('should round-trip XLSB', x.substr(-8) == ".pending" || x.substr(-8) == ".nowrite" ? null : function() {
 			fs.writeFileSync(dir + x + "__.xlsb", J.utils.to_xlsb(wb, {}));
 			wbxlsb = J.readFile(dir + x + "__.xlsb", opts);
-		});*/
+		});
 	});
 });
 

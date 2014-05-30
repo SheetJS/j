@@ -17,6 +17,10 @@ $(TESTFMT): test_%:
 2011:
 	./tests/open_excel_2011.sh
 
+.PHONY: numbers
+numbers:
+	./tests/open_numbers.sh
+
 .PHONY: lint
 lint: $(TARGET)
 	jshint --show-non-errors $(TARGET)
