@@ -236,6 +236,7 @@ apachepoi_53798_shiftNegative_TMPL.xls
 apachepoi_53798_shiftNegative_TMPL.xlsx
 apachepoi_53972.xls
 apachepoi_54016.xls
+apachepoi_54034.xlsx
 apachepoi_54071.xlsx
 apachepoi_54084 - Greek - beyond BMP.xlsx
 apachepoi_54206.xls
@@ -266,10 +267,12 @@ apachepoi_56325.xls
 apachepoi_56450.xls
 apachepoi_56482.xls
 apachepoi_56514.xlsx
+apachepoi_56563a.xls
+apachepoi_56563b.xls
 apachepoi_AbnormalSharedFormulaFlag.xls
 apachepoi_AreaErrPtg.xls
 apachepoi_AverageTaxRates.xlsx
-apachepoi_BOOK_in_capitals.xls.pending
+apachepoi_BOOK_in_capitals.xls
 apachepoi_Booleans.xlsx
 apachepoi_BrNotClosed.xlsx
 apachepoi_CodeFunctionTestCaseData.xls
@@ -460,6 +463,7 @@ apachepoi_styles.xlsx
 apachepoi_sumifformula.xls
 apachepoi_sumifs.xls
 apachepoi_templateExcelWithAutofilter.xls
+apachepoi_test.xltx
 apachepoi_testArraysAndTables.xls
 apachepoi_testNames.xls
 apachepoi_testRRaC.xls
@@ -477,6 +481,10 @@ calendar_stress_test.xls.pending
 calendar_stress_test.xlsb.pending
 calendar_stress_test.xlsx.nowrite
 calendar_stress_test.xml.nowrite
+cell_style_simple.xls
+cell_style_simple.xlsb
+cell_style_simple.xlsx
+cell_style_simple.xml
 comments_stress_test.xls
 comments_stress_test.xls.xml
 comments_stress_test.xlsb
@@ -506,6 +514,10 @@ formula_stress_test.xlsb
 formula_stress_test.xlsb.xml
 formula_stress_test.xlsx
 formula_stress_test.xlsx.xml
+formulae_test_simple.xls
+formulae_test_simple.xlsb
+formulae_test_simple.xlsx
+formulae_test_simple.xml
 hyperlink_stress_test_2011.xls
 hyperlink_stress_test_2011.xlsb
 hyperlink_stress_test_2011.xlsx

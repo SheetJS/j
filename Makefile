@@ -3,6 +3,9 @@ FMT=xls xml xlsx xlsm xlsb misc
 init:
 	bash init.sh
 
+.PHONY: clean
+clean:
+	if [ -e test_files ]; then rm -f test_files/*__.x*; fi
 
 .PHONY: test mocha
 test mocha: test.js
