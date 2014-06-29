@@ -8,6 +8,7 @@ Supported Formats:
 
 | Format                  | Library |
 | :---------------------- | :------ |
+| XLS (BIFF5, 5.0-7.0)    | JS-XLS  |
 | XLS (BIFF8, 97-2003)    | JS-XLS  |
 | XLSX (2007+)            | JS-XLSX |
 | XLSM (2007+ w/macros)   | JS-XLSX |

@@ -17,5 +17,6 @@ number_format           	.xls .xlsb .xlsm .xls.xml .xlsb.xml .xlsm.xml
 pivot_table_named_range 	.xls .xlsb .xlsx .xml
 pivot_table_test        	.xls .xlsb .xlsm
 rich_text_stress        	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
+sushi                   	.xls .xlsb .xml
 text_and_numbers        	.xls .xlsb .xlsx .xml
 xlsx-stream-d-date-cell 	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml

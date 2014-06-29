@@ -481,6 +481,8 @@ calendar_stress_test.xls.pending
 calendar_stress_test.xlsb.pending
 calendar_stress_test.xlsx.nowrite
 calendar_stress_test.xml.nowrite
+calendar_stress_test.xml.pending
+calendar_stress_test_full.xlsx.pending
 cell_style_simple.xls
 cell_style_simple.xlsb
 cell_style_simple.xlsx
@@ -707,6 +709,7 @@ libreoffice_calc_text-angled-with-border.xlsx
 libreoffice_calc_xls-import_300-worksheets.xls
 libreoffice_calc_xls-import_autofilter-range.xls
 libreoffice_calc_xls-import_cell-border-thickness.xls
+libreoffice_calc_xls-import_encryption_export-conditional-formatting.xls.pending
 libreoffice_calc_xls-import_paste-link_link.xls
 libreoffice_calc_xls-import_paste-link_src.xls
 libreoffice_calc_xls-import_pivot-cache-has-source.xls
@@ -723,6 +726,8 @@ libreoffice_calc_xls-import_row-attributes_row-top-bottom-hidden.xls
 libreoffice_calc_xls-import_shared-formula_1.xls
 libreoffice_calc_xls-import_shared-formulas-simple.xls
 libreoffice_calc_xlsx-export-single-cell-at-last-row.xlsx
+libreoffice_calc_xlsx-import_encryption_simple-encryption-2007.xlsx.pending
+libreoffice_calc_xlsx-import_encryption_simple-encryption-2010.xlsx.pending
 libreoffice_calc_xlsx-import_format-as-table.xlsx
 libreoffice_calc_xlsx-import_named-range.xlsx
 libreoffice_calc_xlsx-import_perf_300000_line_sample.xlsx.pending
@@ -900,6 +905,10 @@ spreadsheet-parsexlsx_bug-6-2.xlsx
 spreadsheet-parsexlsx_bug-6.xlsx
 spreadsheet-parsexlsx_bug-7.xlsx
 spreadsheet-parsexlsx_bug-8.xlsx
+sushi.xls
+sushi.xlsb
+sushi.xlsx
+sushi.xml
 text_and_numbers.xls
 text_and_numbers.xlsb
 text_and_numbers.xlsx
