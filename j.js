@@ -1,9 +1,9 @@
 /* j -- (C) 2013-2014 SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
 /*jshint node:true */
-var XLSX = require('xlsx');
-var XLS = require('xlsjs');
-var fs = require('fs');
+var XLSX = require('xl'+'sx');
+var XLS = require('xl'+'sjs');
+var fs = require('f'+'s');
 var readFileSync = function(filename, options) {
 	var f = fs.readFileSync(filename);
 	switch(f[0]) {

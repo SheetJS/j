@@ -1,12 +1,18 @@
 {
   "name": "j",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "author": "sheetjs",
   "description": "CLI tool for working with XLS/XLSX/XLSM/XLSB files",
   "keywords": [ "excel", "xls", "xlsx", "xlsm", "xlsb", "office", "spreadsheet" ],
   "bin": {
     "j": "./bin/j.njs"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "bin",
+    "j.js"
+  ],
   "main": "./j",
   "dependencies": {
     "xlsjs": "~0.7.0",
