@@ -1,3 +1,4 @@
+TARGET=j.js
 FMT=xls xml xlsx xlsm xlsb misc
 .PHONY: init
 init:
@@ -27,6 +28,7 @@ numbers:
 .PHONY: lint
 lint: $(TARGET)
 	jshint --show-non-errors $(TARGET)
+	jscs $(TARGET)
 
 .PHONY: cov cov-spin
 cov: misc/coverage.html

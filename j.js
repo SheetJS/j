@@ -1,6 +1,6 @@
 /* j -- (C) 2013-2014 SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
-/*jshint node:true */
+/*jshint node:true, eqnull:true */
 var XLSX = require('xl'+'sx');
 var XLS = require('xl'+'sjs');
 var fs = require('f'+'s');
@@ -55,8 +55,8 @@ function get_cols(sheet, XL) {
 	r = _XL.utils.decode_range(sheet["!ref"]);
 	for (R = r.s.r, C = r.s.c; C <= r.e.c; ++C) {
 		val = sheet[_XL.utils.encode_cell({c:C, r:R})];
-		if(!val) continue;
-		hdr[C] = typeof val.w !== 'undefined' ? val.w : _XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
+		if(val == null) continue;
+		hdr[C] = val.w !== undefined ? val.w : _XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
 	}
 	return hdr;
 }
@@ -66,15 +66,41 @@ function to_html(w) {
 	var json = to_json(w);
 	var tbl = {};
 	wb.SheetNames.forEach(function(sheet) {
+		var ws = wb.Sheets[sheet];
+		if(ws["!ref"] == null) return;
+		var src = "<h3>" + sheet + "</h3>";
+		var range = XL.utils.decode_range(ws["!ref"]);
+		src += "<table>";
+		src += "<colgroup span=\"" + (range.e.c - range.s.c + 1) + "\"></colgroup>";
+		for(var R = range.s.r; R <= range.e.r; ++R) {
+			src += "<tr>";
+			for(var C = range.s.c; C <= range.e.c; ++C) {
+				var val = ws[XL.utils.encode_cell({c:C,r:R})];
+				var w = val == null ? "" : val.w !== undefined ? val.w : XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
+				src += "<td>" + w + "</td>";
+			}
+			src += "</tr>";
+		}
+		src += "</table>";
+		tbl[sheet] = src;
+	});
+	return tbl;
+}
+
+function to_html_cols(w) {
+	var XL = w[0], wb = w[1];
+	var json = to_json(w);
+	var tbl = {};
+	wb.SheetNames.forEach(function(sheet) {
 		var cols = get_cols(wb.Sheets[sheet], XL);
 		var src = "<h3>" + sheet + "</h3>";
 		src += "<table>";
 		src += "<thead><tr>";
-		cols.forEach(function(c) { src += "<th>" + (typeof c !== "undefined" ? c : "") + "</th>"; });
+		cols.forEach(function(c) { src += "<th>" + (c !== undefined ? c : "") + "</th>"; });
 		src += "</tr></thead>";
 		(json[sheet]||[]).forEach(function(row) {
 			src += "<tr>";
-			cols.forEach(function(c) { src += "<td>" + (typeof row[c] !== "undefined" ? row[c] : "") + "</td>"; });
+			cols.forEach(function(c) { src += "<td>" + (row[c] !== undefined ? row[c] : "") + "</td>"; });
 			src += "</tr>";
 		});
 		src += "</table>";
@@ -125,10 +151,10 @@ function to_xml(w) {
 function to_xlsx_factory(t) {
 	return function(w, o) {
 		o = o || {}; o.bookType = t;
-		if(typeof o.bookSST === 'undefined') o.bookSST = true;
-		if(typeof o.type === 'undefined') o.type = 'buffer';
+		if(o.bookSST === undefined) o.bookSST = true;
+		if(o.type === undefined) o.type = 'buffer';
 		return XLSX.write(w[1], o);
-	}
+	};
 }
 
 var to_xlsx = to_xlsx_factory('xlsx');
@@ -148,6 +174,7 @@ module.exports = {
 		to_xlsb: to_xlsb,
 		to_json: to_json,
 		to_html: to_html,
+		to_html_cols: to_html_cols,
 		to_formulae: to_formulae,
 		get_cols: get_cols
 	},

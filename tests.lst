@@ -264,6 +264,7 @@ apachepoi_56274.xlsx
 apachepoi_56278.xlsx
 apachepoi_56315.xlsx
 apachepoi_56325.xls
+apachepoi_56420.xlsx
 apachepoi_56450.xls
 apachepoi_56482.xls
 apachepoi_56514.xlsx
@@ -476,6 +477,7 @@ apachepoi_workbookProtection_workbook_structure_protected.xlsx
 apachepoi_workbookProtection_workbook_windows_protected.xlsx
 apachepoi_workbookProtection_worksheet_protected.xlsx
 apachepoi_xlsx-jdbc.xlsx
+apachepoi_xor-encryption-abc.xls.pending
 apachepoi_yearfracExamples.xls
 calendar_stress_test.xls.pending
 calendar_stress_test.xlsb.pending
@@ -754,6 +756,10 @@ number_format.xlsb
 number_format.xlsb.xml
 number_format.xlsm
 number_format.xlsm.xml
+number_format_russian.xls
+number_format_russian.xlsb
+number_format_russian.xlsm
+number_format_russian.xml
 oo34xml_cell_pattern.xml
 oo34xml_cellstyle.xml
 oo34xml_conditionalformat.xml
@@ -905,6 +911,9 @@ spreadsheet-parsexlsx_bug-6-2.xlsx
 spreadsheet-parsexlsx_bug-6.xlsx
 spreadsheet-parsexlsx_bug-7.xlsx
 spreadsheet-parsexlsx_bug-8.xlsx
+spreadsheet-parsexlsx_bug-lock.xlsx
+spreadsheet-parsexlsx_column-formats.xlsx
+spreadsheet-parsexlsx_tab-color.xlsx
 sushi.xls
 sushi.xlsb
 sushi.xlsx

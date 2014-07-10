@@ -25,6 +25,7 @@ files.forEach(function(x) {
 			J.utils.to_json(wb, true);
 			J.utils.to_json(wb, false);
 			J.utils.to_dsv(wb,",", "\n");
+			J.utils.to_dsv(wb,";", "\n");
 			J.utils.to_html(wb);
 			J.utils.to_xml(wb);
 		});
