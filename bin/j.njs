@@ -19,6 +19,7 @@ program
 	.option('-J, --raw-js', 'emit raw JS object (raw numbers)')
 	.option('-x, --xml', 'emit XML')
 	.option('-H, --html', 'emit HTML')
+	.option('-m, --markdown', 'emit markdown table (with pipes)')
 	.option('-F, --field-sep <sep>', 'CSV field separator', ",")
 	.option('-R, --row-sep <sep>', 'CSV row separator', "\n")
 	.option('-n, --sheet-rows <num>', 'Number of rows to process (0=all rows)')
@@ -106,6 +107,7 @@ else if(program.json) oo = JSON.stringify(J.utils.to_json(w)[target_sheet]);
 else if(program.rawJs) oo = JSON.stringify(J.utils.to_json(w,true)[target_sheet]);
 else if(program.xml) oo = J.utils.to_xml(w)[target_sheet];
 else if(program.html) oo = J.utils.to_html(w)[target_sheet];
+else if(program.markdown) oo = J.utils.to_md(w)[target_sheet];
 else oo = J.utils.to_dsv(w, program.fieldSep, program.rowSep)[target_sheet];
 
 if(program.output) fs.writeFileSync(program.output, oo);

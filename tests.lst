@@ -270,6 +270,7 @@ apachepoi_56482.xls
 apachepoi_56514.xlsx
 apachepoi_56563a.xls
 apachepoi_56563b.xls
+apachepoi_56702.xlsx
 apachepoi_AbnormalSharedFormulaFlag.xls
 apachepoi_AreaErrPtg.xls
 apachepoi_AverageTaxRates.xlsx
@@ -501,6 +502,10 @@ custom_properties.xlsb
 custom_properties.xlsb.xml
 custom_properties.xlsx
 custom_properties.xlsx.xml
+defined_names_simple.xls
+defined_names_simple.xlsb
+defined_names_simple.xlsx
+defined_names_simple.xml
 excel-reader-xlsx_data01.xlsx
 excel-reader-xlsx_data02.xlsx
 excel-reader-xlsx_error02.xlsx

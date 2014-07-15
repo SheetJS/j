@@ -61,9 +61,43 @@ function get_cols(sheet, XL) {
 	return hdr;
 }
 
+function to_md(w) {
+	var XL = w[0], wb = w[1];
+	var tbl = {};
+	wb.SheetNames.forEach(function(sheet) {
+		var ws = wb.Sheets[sheet];
+		if(ws["!ref"] == null) return;
+		var src = "|", val, w;
+		var range = XL.utils.decode_range(ws["!ref"]);
+		var R = range.s.r, C;
+		for(C = range.s.c; C <= range.e.c; ++C) {
+			val = ws[XL.utils.encode_cell({c:C,r:R})];
+			w = val == null ? "" : val.w !== undefined ? val.w : XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
+			src += w + "|";
+		}
+		src += "\n|";
+		for(C = range.s.c; C <= range.e.c; ++C) {
+			val = ws[XL.utils.encode_cell({c:C,r:R})];
+			w = val == null ? "" : val.w !== undefined ? val.w : XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
+			src += " ---- |";
+		}
+		src += "\n";
+		for(R = range.s.r+1; R <= range.e.r; ++R) {
+			src += "|";
+			for(C = range.s.c; C <= range.e.c; ++C) {
+				val = ws[XL.utils.encode_cell({c:C,r:R})];
+				w = val == null ? "" : val.w !== undefined ? val.w : XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
+				src += w + "|";
+			}
+			src += "\n";
+		}
+		tbl[sheet] = src;
+	});
+	return tbl;
+}
+
 function to_html(w) {
 	var XL = w[0], wb = w[1];
-	var json = to_json(w);
 	var tbl = {};
 	wb.SheetNames.forEach(function(sheet) {
 		var ws = wb.Sheets[sheet];
@@ -176,6 +210,7 @@ module.exports = {
 		to_html: to_html,
 		to_html_cols: to_html_cols,
 		to_formulae: to_formulae,
+		to_md: to_md,
 		get_cols: get_cols
 	},
 	version: "XLS " + XLS.version + " ; XLSX " + XLSX.version

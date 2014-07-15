@@ -44,9 +44,10 @@ is the parsed file.
 - `to_csv(w) / to_dsv(w, delim)` will generate CSV/DSV respectively
 - `to_json(w)` will generate JSON row objects
 - `to_html(w)` will generate simple HTML tables
+- `to_formulae(w)` will generate lists of formulae
 - `to_xml(w)` will generate simple XML
-- `to_xlsx(w)` will generate XLSX workbooks
-- `to_xlsm(w)` will generate XLSM workbooks
+- `to_xlsx(w) / to_xlsm(w) / to_xlsb(w)` will generate XLSX/XLSM/XLSB workbooks
+- `to_md(w)` will generate markdown tables
 
 ## CLI Tool
 
@@ -55,7 +56,7 @@ The node module ships with a binary `j` which has a help message:
 ```
 $ j --help
 
-  Usage: j.njs [options] <file> [sheetname]
+  Usage: j [options] <file> [sheetname]
 
   Options:
 
@@ -65,13 +66,15 @@ $ j --help
     -s, --sheet <sheet>     print specified sheet (default first sheet)
     -l, --list-sheets       list sheet names and exit
     -o, --output <file>     output to specified file
+    -B, --xlsb              emit XLSB to <sheetname> or <file>.xlsb
     -M, --xlsm              emit XLSM to <sheetname> or <file>.xlsm
     -X, --xlsx              emit XLSX to <sheetname> or <file>.xlsx
     -S, --formulae          print formulae
     -j, --json              emit formatted JSON (all fields text)
     -J, --raw-js            emit raw JS object (raw numbers)
-    -X, --xml               emit XML
+    -x, --xml               emit XML
     -H, --html              emit HTML
+    -m, --markdown          emit markdown table (with pipes)
     -F, --field-sep <sep>   CSV field separator
     -R, --row-sep <sep>     CSV row separator
     -n, --sheet-rows <num>  Number of rows to process (0=all rows)

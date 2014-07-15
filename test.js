@@ -27,6 +27,8 @@ files.forEach(function(x) {
 			J.utils.to_dsv(wb,",", "\n");
 			J.utils.to_dsv(wb,";", "\n");
 			J.utils.to_html(wb);
+			J.utils.to_html_cols(wb);
+			J.utils.to_md(wb);
 			J.utils.to_xml(wb);
 		});
 		it('should round-trip XLSX', x.substr(-8) == ".pending" || x.substr(-8) == ".nowrite" ? null : function() {
