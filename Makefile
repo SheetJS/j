@@ -10,7 +10,7 @@ clean:
 
 .PHONY: test mocha
 test mocha: test.js
-	mocha -R spec
+	mocha -R spec -t 10000
 
 TESTFMT=$(patsubst %,test_%,$(FMT))
 .PHONY: $(TESTFMT)
