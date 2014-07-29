@@ -32,17 +32,17 @@ files.forEach(function(x) {
 			J.utils.to_xml(wb);
 		});
 		it('should round-trip XLSX', x.substr(-8) == ".pending" || x.substr(-8) == ".nowrite" ? null : function() {
-			fs.writeFileSync(dir + x + "__.xlsx", J.utils.to_xlsx(wb, {}));
+			fs.writeFileSync(dir + x + "__.xlsx", J.utils.to_xlsx(wb, {bookSST:true}));
 			wbxlsx = J.readFile(dir + x + "__.xlsx", opts);
 		});
 
 		it('should round-trip XLSM', x.substr(-8) == ".pending" || x.substr(-8) == ".nowrite"  ? null : function() {
-			fs.writeFileSync(dir + x + "__.xlsm", J.utils.to_xlsm(wb, {}));
+			fs.writeFileSync(dir + x + "__.xlsm", J.utils.to_xlsm(wb, {bookSST:true}));
 			wbxlsm = J.readFile(dir + x + "__.xlsm", opts);
 		});
 
 		it('should round-trip XLSB', x.substr(-8) == ".pending" || x.substr(-8) == ".nowrite" ? null : function() {
-			fs.writeFileSync(dir + x + "__.xlsb", J.utils.to_xlsb(wb, {}));
+			fs.writeFileSync(dir + x + "__.xlsb", J.utils.to_xlsb(wb, {bookSST:true}));
 			wbxlsb = J.readFile(dir + x + "__.xlsb", opts);
 		});
 	});

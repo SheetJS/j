@@ -139,7 +139,7 @@ apachepoi_46368.xls
 apachepoi_46445.xls
 apachepoi_46535.xlsx
 apachepoi_46536.xlsx
-apachepoi_46904.xls
+apachepoi_46904.xls.nowrite
 apachepoi_47026.xlsm
 apachepoi_47034.xls
 apachepoi_47089.xlsm
@@ -342,7 +342,7 @@ apachepoi_ReptFunctionTestCaseData.xls
 apachepoi_RomanFunctionTestCaseData.xls
 apachepoi_SampleSS.xls
 apachepoi_SampleSS.xlsx
-apachepoi_SharedFormulaTest.xls
+apachepoi_SharedFormulaTest.xls.pending
 apachepoi_SheetWithDrawing.xls
 apachepoi_ShrinkToFit.xls
 apachepoi_ShrinkToFit.xlsx
@@ -739,7 +739,7 @@ libreoffice_calc_xlsx-import_format-as-table.xlsx
 libreoffice_calc_xlsx-import_named-range.xlsx
 libreoffice_calc_xlsx-import_perf_300000_line_sample.xlsx.pending
 libreoffice_calc_xlsx-import_perf_8-by-300000-cells.xlsx.pending
-libreoffice_calc_xlsx-import_perf_pivot-table-with-large-unique-entries.xlsx
+libreoffice_calc_xlsx-import_perf_pivot-table-with-large-unique-entries.xlsx.pending
 libreoffice_calc_xlsx-import_shared-formula_1.xlsx
 merge_cells.xls
 merge_cells.xls.xml

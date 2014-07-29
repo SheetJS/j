@@ -7,7 +7,7 @@ var fs = require('fs'), program = require('commander');
 program
 	.version(J.version)
 	.usage('[options] <file> [sheetname]')
-	.option('-f, --file <file>', 'use specified workbook')
+	.option('-f, --file <file>', 'use specified file (- for stdin)')
 	.option('-s, --sheet <sheet>', 'print specified sheet (default first sheet)')
 	.option('-l, --list-sheets', 'list sheet names and exit')
 	.option('-o, --output <file>', 'output to specified file')
@@ -48,7 +48,7 @@ if(!filename) {
 	process.exit(1);
 }
 
-if(!fs.existsSync(filename)) {
+if(filename !== "-" && !fs.existsSync(filename)) {
 	console.error("j: " + filename + ": No such file or directory");
 	process.exit(2);
 }
@@ -63,18 +63,50 @@ if(program.xlsx || program.xlsm || program.xlsb) {
 if(program.dev) {
 	J.XLS.verbose = J.XLSX.verbose = 2;
 	opts.WTF = true;
-	w = J.readFile(filename, opts);
-	X = w[0]; wb = w[1];
 }
-else try {
-	w = J.readFile(filename, opts);
-	X = w[0]; wb = w[1];
-} catch(e) {
-	var msg = (program.quiet) ? "" : "j: error parsing ";
-	msg += filename + ": " + e;
-	console.error(msg);
-	process.exit(3);
+
+
+if(filename == "-") {
+	var buffers = [];
+	process.stdin.on('readable', function() {
+		var chunk = process.stdin.read();
+		if(chunk !== null) {
+			buffers.push(chunk);
+		}
+	});
+	process.stdin.on('end', function() {
+		if(program.dev) {
+			w = J.read(Buffer.concat(buffers), opts);
+		}
+		else try {
+			w = J.read(Buffer.concat(buffers), opts);
+		} catch(e) {
+			var msg = (program.quiet) ? "" : "j: error parsing ";
+			msg += filename + ": " + e;
+			console.error(msg);
+			process.exit(3);
+		}
+		process_data(w);
+	});
+} else {
+	if(program.dev) {
+		w = J.readFile(filename, opts);
+	}
+	else try {
+		w = J.readFile(filename, opts);
+	} catch(e) {
+		var msg = (program.quiet) ? "" : "j: error parsing ";
+		msg += filename + ": " + e;
+		console.error(msg);
+		process.exit(3);
+	}
+	process_data(w);
 }
+
+
+function process_data(w) {
+
+X = w[0]; wb = w[1];
 if(program.read) process.exit(0);
 
 if(program.listSheets) {
@@ -112,3 +144,5 @@ else oo = J.utils.to_dsv(w, program.fieldSep, program.rowSep)[target_sheet];
 
 if(program.output) fs.writeFileSync(program.output, oo);
 else console.log(oo);
+
+}

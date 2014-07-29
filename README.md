@@ -62,7 +62,7 @@ $ j --help
 
     -h, --help              output usage information
     -V, --version           output the version number
-    -f, --file <file>       use specified workbook
+    -f, --file <file>       use specified file (- for stdin)
     -s, --sheet <sheet>     print specified sheet (default first sheet)
     -l, --list-sheets       list sheet names and exit
     -o, --output <file>     output to specified file

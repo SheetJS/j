@@ -18,6 +18,19 @@ var readFileSync = function(filename, options) {
 	}
 };
 
+var read = function(data, options) {
+	switch(data[0]) {
+		/* CFB container */
+		case 0xd0: return [XLS, XLS.read(data, options)];
+		/* XML container (assumed 2003/2004) */
+		case 0x3c: return [XLS, XLS.read(data, options)];
+		/* Zip container */
+		case 0x50: return [XLSX, XLSX.read(data, options)];
+		/* Unknown */
+		default: return [undefined, data];
+	}
+};
+
 function to_formulae(w) {
 	var XL = w[0], workbook = w[1];
 	var result = {};
@@ -199,6 +212,7 @@ module.exports = {
 	XLSX: XLSX,
 	XLS: XLS,
 	readFile:readFileSync,
+	read:read,
 	utils: {
 		to_csv: to_dsv,
 		to_dsv: to_dsv,
