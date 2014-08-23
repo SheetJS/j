@@ -9,6 +9,7 @@ program
 	.usage('[options] <file> [sheetname]')
 	.option('-f, --file <file>', 'use specified file (- for stdin)')
 	.option('-s, --sheet <sheet>', 'print specified sheet (default first sheet)')
+	.option('-N, --sheet-index <idx>', 'use specified sheet index (0-based)')
 	.option('-l, --list-sheets', 'list sheet names and exit')
 	.option('-o, --output <file>', 'output to specified file')
 	.option('-B, --xlsb', 'emit XLSB to <sheetname> or <file>.xlsb')
@@ -35,6 +36,17 @@ program.on('--help', function() {
 
 program.parse(process.argv);
 
+/* see https://github.com/SheetJS/j/issues/4 */
+if(process.version === 'v0.10.31') {
+	var msgs = [
+		"node v0.10.31 is known to crash on OSX and Linux, refusing to proceed.",
+		"see https://github.com/SheetJS/j/issues/4 for the relevant discussion.",
+		"see https://github.com/joyent/node/issues/8208 for the relevant node issue"
+	];
+	msgs.forEach(function(m) { console.error(m); });
+	process.exit(1);
+}
+
 var filename, sheetname = '';
 if(program.args[0]) {
 	filename = program.args[0];
@@ -42,6 +54,8 @@ if(program.args[0]) {
 }
 if(program.sheet) sheetname = program.sheet;
 if(program.file) filename = program.file;
+
+if(!process.stdin.isTTY) filename = filename || "-";
 
 if(!filename) {
 	console.error("j: must specify a filename");
@@ -65,21 +79,14 @@ if(program.dev) {
 	opts.WTF = true;
 }
 
-
-if(filename == "-") {
-	var buffers = [];
-	process.stdin.on('readable', function() {
-		var chunk = process.stdin.read();
-		if(chunk !== null) {
-			buffers.push(chunk);
-		}
-	});
-	process.stdin.on('end', function() {
+if(filename === "-") {
+	var concat = require('concat-stream');
+	process.stdin.pipe(concat(function(data) {
 		if(program.dev) {
-			w = J.read(Buffer.concat(buffers), opts);
+			w = J.read(data, opts);
 		}
 		else try {
-			w = J.read(Buffer.concat(buffers), opts);
+			w = J.read(data, opts);
 		} catch(e) {
 			var msg = (program.quiet) ? "" : "j: error parsing ";
 			msg += filename + ": " + e;
@@ -87,7 +94,7 @@ if(filename == "-") {
 			process.exit(3);
 		}
 		process_data(w);
-	});
+	}));
 } else {
 	if(program.dev) {
 		w = J.readFile(filename, opts);
@@ -121,8 +128,10 @@ if(program.xlsm) return fs.writeFileSync(sheetname || (filename + ".xlsm"), J.ut
 if(program.xlsb) return fs.writeFileSync(sheetname || (filename + ".xlsb"), J.utils.to_xlsb(w, wopts));
 
 var target_sheet = sheetname || '';
-if(target_sheet === '') target_sheet = (wb.SheetNames||[""])[0];
-
+if(target_sheet === '') {
+	if(program.sheetIndex < (wb.SheetNames||[]).length) target_sheet = wb.SheetNames[program.sheetIndex];
+	else target_sheet = (wb.SheetNames||[""])[0];
+}
 var ws;
 try {
 	ws = wb.Sheets[target_sheet];

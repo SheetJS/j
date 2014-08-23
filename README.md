@@ -60,27 +60,28 @@ $ j --help
 
   Options:
 
-    -h, --help              output usage information
-    -V, --version           output the version number
-    -f, --file <file>       use specified file (- for stdin)
-    -s, --sheet <sheet>     print specified sheet (default first sheet)
-    -l, --list-sheets       list sheet names and exit
-    -o, --output <file>     output to specified file
-    -B, --xlsb              emit XLSB to <sheetname> or <file>.xlsb
-    -M, --xlsm              emit XLSM to <sheetname> or <file>.xlsm
-    -X, --xlsx              emit XLSX to <sheetname> or <file>.xlsx
-    -S, --formulae          print formulae
-    -j, --json              emit formatted JSON (all fields text)
-    -J, --raw-js            emit raw JS object (raw numbers)
-    -x, --xml               emit XML
-    -H, --html              emit HTML
-    -m, --markdown          emit markdown table (with pipes)
-    -F, --field-sep <sep>   CSV field separator
-    -R, --row-sep <sep>     CSV row separator
-    -n, --sheet-rows <num>  Number of rows to process (0=all rows)
-    --dev                   development mode
-    --read                  read but do not print out contents
-    -q, --quiet             quiet mode
+    -h, --help               output usage information
+    -V, --version            output the version number
+    -f, --file <file>        use specified file (- for stdin)
+    -s, --sheet <sheet>      print specified sheet (default first sheet)
+    -N, --sheet-index <idx>  use specified sheet index (0-based)
+    -l, --list-sheets        list sheet names and exit
+    -o, --output <file>      output to specified file
+    -B, --xlsb               emit XLSB to <sheetname> or <file>.xlsb
+    -M, --xlsm               emit XLSM to <sheetname> or <file>.xlsm
+    -X, --xlsx               emit XLSX to <sheetname> or <file>.xlsx
+    -S, --formulae           print formulae
+    -j, --json               emit formatted JSON (all fields text)
+    -J, --raw-js             emit raw JS object (raw numbers)
+    -x, --xml                emit XML
+    -H, --html               emit HTML
+    -m, --markdown           emit markdown table (with pipes)
+    -F, --field-sep <sep>    CSV field separator
+    -R, --row-sep <sep>      CSV row separator
+    -n, --sheet-rows <num>   Number of rows to process (0=all rows)
+    --dev                    development mode
+    --read                   read but do not print out contents
+    -q, --quiet              quiet mode
 ```
 
 
