@@ -208,7 +208,7 @@ var to_xlsx = to_xlsx_factory('xlsx');
 var to_xlsm = to_xlsx_factory('xlsm');
 var to_xlsb = to_xlsx_factory('xlsb');
 
-module.exports = {
+var J = {
 	XLSX: XLSX,
 	XLS: XLS,
 	readFile:readFileSync,
@@ -229,3 +229,17 @@ module.exports = {
 	},
 	version: "XLS " + XLS.version + " ; XLSX " + XLSX.version
 };
+
+if(typeof module !== 'undefined') module.exports = J;
+if(typeof process !== 'undefined') {
+	/* see https://github.com/SheetJS/j/issues/4 */
+	if(process.version === 'v0.10.31') {
+		var msgs = [
+			"node v0.10.31 is known to crash on OSX and Linux, refusing to proceed.",
+			"see https://github.com/SheetJS/j/issues/4 for the relevant discussion.",
+			"see https://github.com/joyent/node/issues/8208 for the relevant node issue"
+		];
+		msgs.forEach(function(m) { console.error(m); });
+		throw "node v0.10.31 bug";
+	}
+}

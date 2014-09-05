@@ -133,3 +133,10 @@ git config --global diff.sheetjs.textconv "j -S"
 
 NOTE: There are some known issues regarding global modules in Windows.  The best
 bet is to `npm install j` in your git directory before diffing.
+
+## Notes
+
+Segmentation faults in node v0.10.31 stem from a bug in node.  J will throw an
+error if it is running under that version.  Since versions prior to v0.10.30 do
+not exhibit the problem, rolling back to a previous version of node is the best
+remedy.  See <https://github.com/joyent/node/issues/8208> for more information.
