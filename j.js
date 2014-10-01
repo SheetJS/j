@@ -3,6 +3,13 @@
 /*jshint node:true, eqnull:true */
 var XLSX = require('xl'+'sx');
 var XLS = require('xl'+'sjs');
+var UTILS = XLSX.utils;
+
+var libs = [
+	["XLS", XLS],
+	["XLSX", XLSX]
+];
+
 var fs = require('f'+'s');
 var readFileSync = function(filename, options) {
 	var f = fs.readFileSync(filename);
@@ -208,26 +215,103 @@ var to_xlsx = to_xlsx_factory('xlsx');
 var to_xlsm = to_xlsx_factory('xlsm');
 var to_xlsb = to_xlsx_factory('xlsb');
 
+/* originally from http://git.io/xlsx2socialcalc */
+/* xlsx2socialcalc.js (C) 2014 SheetJS -- http://sheetjs.com */
+var sheet_to_socialcalc = (function() {
+	var header = [
+		"socialcalc:version:1.5",
+		"MIME-Version: 1.0",
+		"Content-Type: multipart/mixed; boundary=SocialCalcSpreadsheetControlSave"
+	].join("\n");
+
+	var sep = [
+		"--SocialCalcSpreadsheetControlSave",
+		"Content-type: text/plain; charset=UTF-8",
+		""
+	].join("\n");
+
+	/* TODO: the other parts */
+	var meta = [
+		"# SocialCalc Spreadsheet Control Save",
+		"part:sheet"
+	].join("\n");
+
+	var end = "--SocialCalcSpreadsheetControlSave--";
+
+	var scencode = function(s) { return s.replace(/\\/g, "\\b").replace(/:/g, "\\c").replace(/\n/g,"\\n"); }
+
+	var scsave = function scsave(ws) {
+		if(!ws || !ws['!ref']) return "";
+		var o = [], oo = [], cell, coord;
+		var r = UTILS.decode_range(ws['!ref']);
+		for(var R = r.s.r; R <= r.e.r; ++R) {
+			for(var C = r.s.c; C <= r.e.c; ++C) {
+				coord = UTILS.encode_cell({r:R,c:C});
+				if(!(cell = ws[coord]) || cell.v == null) continue;
+				oo = ["cell", coord, 't'];
+				switch(cell.t) {
+					case 's': case 'str': oo.push(scencode(cell.v)); break;
+					case 'n':
+						if(cell.f) {
+							oo[2] = 'vtf';
+							oo.push('n');
+							oo.push(cell.v);
+							oo.push(scencode(cell.f));
+						}
+						else {
+							oo[2] = 'v';
+							oo.push(cell.v);
+						} break;
+				}
+				o.push(oo.join(":"));
+			}
+		}
+		o.push("sheet:c:" + (r.e.c - r.s.c + 1) + ":r:" + (r.e.r - r.s.r + 1) + ":tvf:1");
+		o.push("valueformat:1:text-wiki");
+		o.push("copiedfrom:" + ws['!ref']);
+		return o.join("\n");
+	};
+
+	return function socialcalcify(ws, opts) {
+		return [header, sep, meta, sep, scsave(ws), end].join("\n");
+		return ["version:1.5", scsave(ws)].join("\n");
+	};
+})();
+
+function to_socialcalc(w, FS, RS) {
+	var XL = w[0], workbook = w[1];
+	var result = {};
+	workbook.SheetNames.forEach(function(sheetName) {
+		var socialcalc = sheet_to_socialcalc(workbook.Sheets[sheetName]);
+		if(socialcalc.length > 0) result[sheetName] = socialcalc;
+	});
+	return result;
+}
+
+var version = libs.map(function(x) { return x[0] + " " + x[1].version; }).join(" ; ");
+
+var utils = {
+	to_csv: to_dsv,
+	to_dsv: to_dsv,
+	to_xml: to_xml,
+	to_xlsx: to_xlsx,
+	to_xlsm: to_xlsm,
+	to_xlsb: to_xlsb,
+	to_json: to_json,
+	to_html: to_html,
+	to_html_cols: to_html_cols,
+	to_formulae: to_formulae,
+	to_md: to_md,
+	to_socialcalc: to_socialcalc,
+	get_cols: get_cols
+};
 var J = {
 	XLSX: XLSX,
 	XLS: XLS,
 	readFile:readFileSync,
 	read:read,
-	utils: {
-		to_csv: to_dsv,
-		to_dsv: to_dsv,
-		to_xml: to_xml,
-		to_xlsx: to_xlsx,
-		to_xlsm: to_xlsm,
-		to_xlsb: to_xlsb,
-		to_json: to_json,
-		to_html: to_html,
-		to_html_cols: to_html_cols,
-		to_formulae: to_formulae,
-		to_md: to_md,
-		get_cols: get_cols
-	},
-	version: "XLS " + XLS.version + " ; XLSX " + XLSX.version
+	utils: utils,
+	version: version
 };
 
 if(typeof module !== 'undefined') module.exports = J;

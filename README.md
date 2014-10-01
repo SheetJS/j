@@ -76,6 +76,7 @@ $ j --help
     -x, --xml                emit XML
     -H, --html               emit HTML
     -m, --markdown           emit markdown table (with pipes)
+    -E, --socialcalc         emit socialcalc
     -F, --field-sep <sep>    CSV field separator
     -R, --row-sep <sep>      CSV row separator
     -n, --sheet-rows <num>   Number of rows to process (0=all rows)

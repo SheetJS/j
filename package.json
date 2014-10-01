@@ -1,6 +1,6 @@
 {
   "name": "j",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "author": "sheetjs",
   "description": "CLI tool for working with XLS/XLSX/XLSM/XLSB files",
   "keywords": [ "excel", "xls", "xlsx", "xlsm", "xlsb", "office", "spreadsheet" ],
