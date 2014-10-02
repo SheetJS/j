@@ -75,14 +75,14 @@ function to_dsv(w, FS, RS) {
 
 function get_cols(sheet, XL) {
 	var val, r, hdr, R, C, _XL = XL || XLS;
-	if(!XL.utils.format_cell) XL = XLSX;
+	if(!_XL.utils.format_cell) _XL = XLSX;
 	hdr = [];
 	if(!sheet["!ref"]) return hdr;
 	r = _XL.utils.decode_range(sheet["!ref"]);
 	for (R = r.s.r, C = r.s.c; C <= r.e.c; ++C) {
 		val = sheet[_XL.utils.encode_cell({c:C, r:R})];
 		if(val == null) continue;
-		hdr[C] = val.w !== undefined ? val.w : _XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
+		hdr[C] = val.w !== undefined ? val.w : _XL.utils.format_cell ? _XL.utils.format_cell(val) : val.v;
 	}
 	return hdr;
 }
@@ -298,8 +298,8 @@ var sheet_to_socialcalc = (function() {
 	};
 })();
 
-function to_socialcalc(w, FS, RS) {
-	var XL = w[0], workbook = w[1];
+function to_socialcalc(w) {
+	var workbook = w[1];
 	var result = {};
 	workbook.SheetNames.forEach(function(sheetName) {
 		var socialcalc = sheet_to_socialcalc(workbook.Sheets[sheetName]);

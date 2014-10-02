@@ -21,6 +21,7 @@ Supported Formats:
 | DIF (plaintext)         | JS-HARB |
 | UTF-16 Text             | JS-HARB |
 | CSV / TSV               | JS-HARB |
+| SYLK (Symbolic Link)    | JS-HARB |
 | SocialCalc              | JS-HARB |
 
 Output formats:

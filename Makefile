@@ -1,5 +1,5 @@
 TARGET=j.js
-FMT=xls xml xlsx xlsm xlsb misc
+FMT=xls xml xlsx xlsm xlsb csv slk dif txt misc
 .PHONY: init
 init:
 	bash init.sh

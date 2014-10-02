@@ -6,7 +6,7 @@ describe('source',function(){it('should load',function(){J=require('./');});});
 
 var opts = {cellNF:true};
 if(process.env.WTF) opts.WTF = true;
-var ex = [".xls",".xml",".xlsx",".xlsm",".xlsb"];
+var ex = [".xls",".xml",".xlsx",".xlsm",".xlsb",".csv",".slk",".dif",".txt"];
 if(process.env.FMTS) ex=process.env.FMTS.split(":").map(function(x){return x[0]==="."?x:"."+x;});
 var exp = ex.map(function(x){ return x + ".pending"; });
 function test_file(x) {	return ex.indexOf(x.substr(-4))>=0 || ex.indexOf(x.substr(-5))>=0 || exp.indexOf(x.substr(-12))>=0 || exp.indexOf(x.substr(-13))>=0; }
