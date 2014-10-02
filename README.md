@@ -1,6 +1,10 @@
 # J
 
-Simple data wrapper that attempts to wrap [xlsjs](http://npm.im/xlsjs) and [xlsx](http://npm.im/xlsx) to provide a uniform way to access data from Excel files.
+Simple data wrapper that attempts to wrap SheetJS libraries to provide a uniform way to access data from Excel and other spreadsheet files:
+
+- [xlsjs](http://npm.im/xlsjs)
+- [xlsx](http://npm.im/xlsx)
+- [harb](http://npm.im/harb)
 
 Excel files are parsed based on the content (not by filename).  For example, CSV files can be renamed to .XLS and excel will do the right thing.
 
@@ -14,14 +18,20 @@ Supported Formats:
 | XLSM (2007+ w/macros)   | JS-XLSX |
 | XLSB (2007+ binary)     | JS-XLSX |
 | XML (2003/2004, basic)  | JS-XLS  |
+| DIF (plaintext)         | JS-HARB |
+| UTF-16 Text             | JS-HARB |
+| CSV / TSV               | JS-HARB |
+| SocialCalc              | JS-HARB |
 
 Output formats:
 
 - XML and HTML work with [Excel Web Query](http://office.microsoft.com/en-us/excel-help/get-and-analyze-data-from-the-web-in-excel-HA001054848.aspx)
-- CSV (and other delimited formats such as TSV)
+- DSV (general delimiters, including CSV and TSV)
 - JSON
 - Formulae list (e.g. `A1=NOW()`, `A2=A1+3`)
 - XLSX / XLSM work with iOS Numbers and Excel
+- Markdown tables (GFM style)
+- SocialCalc output
 
 ## Installation
 
