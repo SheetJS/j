@@ -28,5 +28,5 @@ smart_tags_2007         	.xls .xlsb .xlsx .xml
 sushi                   	.xls .xlsb .xlsx .xml
 text_and_numbers        	.xls .xlsb .xlsx .xml
 #time_stress_test_1      	.xls .xlsb .xlsx .xml
-write  						.dif .txt
+write  						.dif .txt .slk
 xlsx-stream-d-date-cell 	.xls .xlsb .xlsx .xls.xml .xlsb.xml .xlsx.xml
