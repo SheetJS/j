@@ -2,9 +2,9 @@
 
 Simple data wrapper that attempts to wrap SheetJS libraries to provide a uniform way to access data from Excel and other spreadsheet files:
 
-- [xlsjs](http://npm.im/xlsjs)
-- [xlsx](http://npm.im/xlsx)
-- [harb](http://npm.im/harb)
+- JS-XLS: [xlsjs on npm](http://npm.im/xlsjs)
+- JS-XLSX: [xlsx on npm](http://npm.im/xlsx)
+- JS-HARB: [harb on npm](http://npm.im/harb)
 
 Excel files are parsed based on the content (not by filename).  For example, CSV files can be renamed to .XLS and excel will do the right thing.
 
@@ -17,11 +17,12 @@ Supported Formats:
 | XLSX (2007+)            | JS-XLSX |
 | XLSM (2007+ w/macros)   | JS-XLSX |
 | XLSB (2007+ binary)     | JS-XLSX |
-| XML (2003/2004, basic)  | JS-XLS  |
+| XML (2003/2004)         | JS-XLS  |
 | DIF (plaintext)         | JS-HARB |
 | UTF-16 Text             | JS-HARB |
 | CSV / TSV               | JS-HARB |
 | SYLK (Symbolic Link)    | JS-HARB |
+| ODS (OpenDocument)      | JS-XLSX |
 | SocialCalc              | JS-HARB |
 
 Output formats:

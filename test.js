@@ -15,6 +15,8 @@ var files = (fs.existsSync('tests.lst') ? fs.readFileSync('tests.lst', 'utf-8').
 
 var dir = "./test_files/";
 
+before(function(){if(!fs.existsSync(dir))throw new Error(dir + " missing");});
+
 files.forEach(function(x) {
 	if(fs.existsSync(dir + x.replace(/\.(pending|nowrite)/, ""))) describe(x.replace(/\.pending/,""), function() {
 		var wb, wbxlsx, wbxlsm, wbxlsb;

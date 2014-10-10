@@ -1,6 +1,6 @@
 {
   "name": "j",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "author": "sheetjs",
   "description": "CLI tool for working with XLS/XLSX/XLSM/XLSB files",
   "keywords": [ "excel", "xls", "xlsx", "xlsm", "xlsb", "office", "spreadsheet" ],
@@ -16,7 +16,7 @@
   "main": "./j",
   "dependencies": {
     "xlsjs": "~0.7.1",
-    "xlsx": "~0.7.10",
+    "xlsx": "~0.7.11",
     "harb": "~0.0.5",
     "concat-stream":"",
     "commander":""
