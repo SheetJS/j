@@ -60,13 +60,22 @@ is the parsed file.
 
 `J.utils` has various helpers that expect an array like those from readFile:
 
-- `to_csv(w) / to_dsv(w, delim)` will generate CSV/DSV respectively
-- `to_json(w)` will generate JSON row objects
-- `to_html(w)` will generate simple HTML tables
-- `to_formulae(w)` will generate lists of formulae
-- `to_xml(w)` will generate simple XML
-- `to_xlsx(w) / to_xlsm(w) / to_xlsb(w)` will generate XLSX/XLSM/XLSB workbooks
-- `to_md(w)` will generate markdown tables
+| Format                                                   |   util helper     |
+|:---------------------------------------------------------|:------------------|
+| Excel 2007+ XML Formats (XLSX/XLSM)                      | `to_xlsx/to_xlsm` |
+| Excel 2007+ Binary Format (XLSB BIFF12)                  | `to_xlsb`         |
+| Excel 2.0/2.1 (XLS BIFF2)                                | `to_biff2`        |
+| Delimiter-Separated Values (CSV/TSV/DSV)                 | `to_csv/to_dsv`   |
+| Data Interchange Format (DIF)                            | `to_dif`          |
+| Symbolic Link (SYLK/SLK)                                 | `to_sylk`         |
+| OpenDocument Spreadsheet (ODS)                           | `to_ods`          |
+| Flat XML ODF Spreadsheet (FODS)                          | `to_fods`         |
+| HTML Tables                                              | `to_html`         |
+| Markdown Tables                                          | `to_md`           |
+| XML Data (XML)                                           | `to_xml`          |
+| SocialCalc                                               | `to_socialcalc`   |
+| JSON Row Objects                                         | `to_json`         |
+| List of Formulae                                         | `to_formulae`     |
 
 ## CLI Tool
 
@@ -120,11 +129,19 @@ $ j --help
 
 Please consult the attached LICENSE file for details.  All rights not explicitly granted by the Apache 2.0 license are reserved by the Original Author.
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/cb2e495863d0096f50a923515c7331b6 "githalytics.com")](http://githalytics.com/SheetJS/j)
+[![Build Status](https://travis-ci.org/SheetJS/j.svg?branch=master)](https://travis-ci.org/SheetJS/j)
 
-[![Build Status](https://travis-ci.org/SheetJS/j.png?branch=master)](https://travis-ci.org/SheetJS/j)
+[![Coverage Status](http://img.shields.io/coveralls/SheetJS/j/master.svg)](https://coveralls.io/r/SheetJS/j?branch=master)
 
-[![Coverage Status](https://coveralls.io/repos/SheetJS/j/badge.png)](https://coveralls.io/r/SheetJS/j)
+[![NPM Downloads](https://img.shields.io/npm/dt/j.svg)](https://npmjs.org/package/j)
+
+[![Dependencies Status](https://david-dm.org/sheetjs/j/status.svg)](https://david-dm.org/sheetjs/j)
+
+[![ghit.me](https://ghit.me/badge.svg?repo=sheetjs/js-xlsx)](https://ghit.me/repo/sheetjs/js-xlsx)
+
+[![Analytics](https://ga-beacon.appspot.com/UA-36810333-1/SheetJS/j?pixel)](https://github.com/SheetJS/j)
+
+
 
 ## Using J for diffing XLS/XLSB/XLSM/XLSX files
 
@@ -164,10 +181,3 @@ git config --global diff.sheetjs.textconv "j -S"
 
 NOTE: There are some known issues regarding global modules in Windows.  The best
 bet is to `npm install j` in your git directory before diffing.
-
-## Notes
-
-Segmentation faults in node v0.10.31 stem from a bug in node.  J will throw an
-error if it is running under that version.  Since versions prior to v0.10.30 do
-not exhibit the problem, rolling back to a previous version of node is the best
-remedy.  See <https://github.com/joyent/node/issues/8208> for more information.
