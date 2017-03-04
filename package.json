@@ -1,9 +1,9 @@
 {
   "name": "j",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "author": "sheetjs",
-  "description": "CLI tool for working with XLS/XLSX/XLSM/XLSB files",
-  "keywords": [ "excel", "xls", "xlsx", "xlsm", "xlsb", "office", "spreadsheet" ],
+  "description": "CLI tool for working with spreadsheet files",
+  "keywords": [ "excel", "xls", "xlsx", "xlsm", "xlsb", "ods", "dif", "csv", "sylk", "prn", "ods", "dbf", "office", "spreadsheet" ],
   "bin": {
     "j": "./bin/j.njs"
   },
@@ -15,9 +15,10 @@
   ],
   "main": "./j",
   "dependencies": {
-    "xlsjs": "~0.7.1",
-    "xlsx": "~0.7.11",
-    "harb": "~0.0.5",
+    "exit-on-epipe":"",
+    "xlsx": "~0.8.6",
+    "xlsjs": "~0.7.6",
+    "harb": "~0.1.1",
     "concat-stream":"",
     "commander":""
   },
@@ -30,7 +31,7 @@
   },
   "config": {
     "blanket": {
-      "pattern": "[./j.js,./node_modules/xlsjs/xls.js,./node_modules/xlsx/xlsx.js]"
+      "pattern": "[./j.js,./node_modules/xlsx/xlsx.js]"
     }
   },
   "bugs": { "url": "https://github.com/SheetJS/j/issues" },

@@ -1,49 +1,56 @@
 # J
 
-Simple data wrapper that attempts to wrap SheetJS libraries to provide a uniform way to access data from Excel and other spreadsheet files:
+Simple data wrapper that attempts to wrap SheetJS libraries to provide a uniform
+way to access data from Excel and other spreadsheet files:
 
 - JS-XLS: [xlsjs on npm](http://npm.im/xlsjs)
 - JS-XLSX: [xlsx on npm](http://npm.im/xlsx)
 - JS-HARB: [harb on npm](http://npm.im/harb)
 
-Excel files are parsed based on the content (not by filename).  For example, CSV files can be renamed to .XLS and excel will do the right thing.
+Excel files are parsed based on the content (not by filename).  For example, CSV
+files can be renamed to .XLS and excel will do the right thing.
 
 Supported Formats:
 
-| Format                  | Library |
-| :---------------------- | :------ |
-| XLS (BIFF5, 5.0-7.0)    | JS-XLS  |
-| XLS (BIFF8, 97-2003)    | JS-XLS  |
-| XLSX (2007+)            | JS-XLSX |
-| XLSM (2007+ w/macros)   | JS-XLSX |
-| XLSB (2007+ binary)     | JS-XLSX |
-| XML (2003/2004)         | JS-XLS  |
-| DIF (plaintext)         | JS-HARB |
-| UTF-16 Text             | JS-HARB |
-| CSV / TSV               | JS-HARB |
-| SYLK (Symbolic Link)    | JS-HARB |
-| ODS (OpenDocument)      | JS-XLSX |
-| SocialCalc              | JS-HARB |
+| Format                                                       | Read  | Write |
+|:-------------------------------------------------------------|:-----:|:-----:|
+| **Excel Worksheet/Workbook Formats**                         |:-----:|:-----:|
+| Excel 2007+ XML Formats (XLSX/XLSM)                          |  :o:  |  :o:  |
+| Excel 2007+ Binary Format (XLSB BIFF12)                      |  :o:  |  :o:  |
+| Excel 2003-2004 XML Format (XML "SpreadsheetML")             |  :o:  |       |
+| Excel 97-2004 (XLS BIFF8)                                    |  :o:  |       |
+| Excel 5.0/95 (XLS BIFF5)                                     |  :o:  |       |
+| Excel 4.0 (XLS/XLW BIFF4)                                    |  :o:  |       |
+| Excel 3.0 (XLS BIFF3)                                        |  :o:  |       |
+| Excel 2.0/2.1 (XLS BIFF2)                                    |  :o:  |  :o:  |
+| **Excel Supported Text Formats**                             |:-----:|:-----:|
+| Delimiter-Separated Values (CSV/TSV/DSV)                     |  :o:  |  :o:  |
+| Data Interchange Format (DIF)                                |  :o:  |  :o:  |
+| Symbolic Link (SYLK/SLK)                                     |  :o:  |  :o:  |
+| Space-Delimited Text (PRN)                                   |  :o:  |       |
+| UTF-16 Unicode Text (TXT)                                    |  :o:  |       |
+| **Other Workbook/Worksheet Formats**                         |:-----:|:-----:|
+| OpenDocument Spreadsheet (ODS)                               |  :o:  |  :o:  |
+| Flat XML ODF Spreadsheet (FODS)                              |  :o:  |  :o:  |
+| Uniform Office Format Spreadsheet (标文通 UOS1/UOS2)         |  :o:  |       |
+| dBASE II/III/IV / Visual FoxPro (DBF)                        |  :o:  |       |
+| **Other Common Spreadsheet Output Formats**                  |:-----:|:-----:|
+| HTML Tables                                                  |       |  :o:  |
+| Markdown Tables                                              |       |  :o:  |
+| **Other Output Formats**                                     |:-----:|:-----:|
+| XML Data (XML)                                               |       |  :o:  |
+| SocialCalc                                                   |  :o:  |  :o:  |
 
-Output formats:
-
-- XML and HTML work with [Excel Web Query](http://office.microsoft.com/en-us/excel-help/get-and-analyze-data-from-the-web-in-excel-HA001054848.aspx)
-- DSV (general delimiters, including CSV and TSV)
-- JSON
-- Formulae list (e.g. `A1=NOW()`, `A2=A1+3`)
-- XLSX / XLSM work with iOS Numbers and Excel
-- Markdown tables (GFM style)
-- SocialCalc output
 
 ## Installation
 
-```
-npm install -g j
+```bash
+$ npm install -g j
 ```
 
 ## Node Library
 
-```
+```js
 var J = require('j');
 ```
 
@@ -68,7 +75,7 @@ The node module ships with a binary `j` which has a help message:
 ```
 $ j --help
 
-  Usage: j [options] <file> [sheetname]
+  Usage: j.njs [options] <file> [sheetname]
 
   Options:
 
@@ -77,21 +84,32 @@ $ j --help
     -f, --file <file>        use specified file (- for stdin)
     -s, --sheet <sheet>      print specified sheet (default first sheet)
     -N, --sheet-index <idx>  use specified sheet index (0-based)
+    -p, --password <pw>      if file is encrypted, try with specified pw
     -l, --list-sheets        list sheet names and exit
     -o, --output <file>      output to specified file
     -B, --xlsb               emit XLSB to <sheetname> or <file>.xlsb
     -M, --xlsm               emit XLSM to <sheetname> or <file>.xlsm
     -X, --xlsx               emit XLSX to <sheetname> or <file>.xlsx
+    -Y, --ods                emit ODS  to <sheetname> or <file>.ods
+    -2, --biff2              emit XLS  to <sheetname> or <file>.xls (BIFF2)
+    -T, --fods               emit FODS to <sheetname> or <file>.fods (Flat ODS)
     -S, --formulae           print formulae
     -j, --json               emit formatted JSON (all fields text)
     -J, --raw-js             emit raw JS object (raw numbers)
+    -A, --arrays             emit rows as JS objects (raw numbers)
     -x, --xml                emit XML
     -H, --html               emit HTML
-    -m, --markdown           emit markdown table (with pipes)
+    -m, --markdown           emit markdown table
+    -D, --dif                emit data interchange format (dif)
+    -K, --sylk               emit symbolic link (sylk)
     -E, --socialcalc         emit socialcalc
     -F, --field-sep <sep>    CSV field separator
     -R, --row-sep <sep>      CSV row separator
     -n, --sheet-rows <num>   Number of rows to process (0=all rows)
+    --sst                    generate shared string table for XLS* formats
+    --compress               use compression when writing XLSX/M/B and ODS
+    --perf                   do not generate output
+    --all                    parse everything
     --dev                    development mode
     --read                   read but do not print out contents
     -q, --quiet              quiet mode
