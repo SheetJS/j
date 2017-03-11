@@ -12,17 +12,33 @@ UGLIFYOPTS=--support-ie8
 
 ## Main Targets
 
-.PHONY: init
-init:
-	bash init.sh
+.PHONY: all
+all: init ## .
 
 .PHONY: clean
-clean:
+clean: ## Remove targets and build artifacts
 	rm -f tmp/*__.*
+
+.PHONY: init
+init: ## Initial setup for development
+	bash init.sh
+
+.PHONY: graph
+graph: formats.png ## Rebuild format conversion graph
+formats.png: formats.dot
+	circo -Tpng -o$@ $<
+
+.PHONY: nexe
+nexe: j.exe ## Build nexe standalone executable
+
+j.exe: bin/j.njs
+	nexe -i $< -o $@ --flags
+
+## Testing
 
 .PHONY: test mocha
 test mocha: test.js ## Run test suite
-	mocha -R spec -t 20000
+	mocha -R spec -t 30000
 
 #*                      To run tests for one format, make test_<fmt>
 TESTFMT=$(patsubst %,test_%,$(FMT))
@@ -62,11 +78,11 @@ $(COVFMT): cov_%:
 	FMTS=$* make cov
 
 misc/coverage.html: $(TARGET) test.js
-	mocha --require blanket -R html-cov -t 20000 > $@
+	mocha --require blanket -R html-cov -t 30000 > $@
 
 .PHONY: coveralls
 coveralls: ## Coverage Test + Send to coveralls.io
-	mocha --require blanket --reporter mocha-lcov-reporter -t 20000 | node ./node_modules/coveralls/bin/coveralls.js
+	mocha --require blanket --reporter mocha-lcov-reporter -t 30000 | node ./node_modules/coveralls/bin/coveralls.js
 
 
 .PHONY: help

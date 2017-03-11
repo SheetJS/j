@@ -1,9 +1,9 @@
 /* j -- (C) 2013-present  SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
 /*jshint node:true, eqnull:true */
-var XLSX = require('xl'+'sx');
+var XLSX = require('xlsx');
 var XLS = XLSX;
-var HARB = require('ha'+'rb');
+var HARB = require('harb');
 var UTILS = XLSX.utils;
 
 var libs = [

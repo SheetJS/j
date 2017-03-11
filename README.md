@@ -35,12 +35,13 @@ Supported Formats:
 | Uniform Office Format Spreadsheet (标文通 UOS1/UOS2)         |  :o:  |       |
 | dBASE II/III/IV / Visual FoxPro (DBF)                        |  :o:  |       |
 | **Other Common Spreadsheet Output Formats**                  |:-----:|:-----:|
-| HTML Tables                                                  |       |  :o:  |
+| HTML Tables                                                  |  :o:  |  :o:  |
 | Markdown Tables                                              |       |  :o:  |
 | **Other Output Formats**                                     |:-----:|:-----:|
 | XML Data (XML)                                               |       |  :o:  |
 | SocialCalc                                                   |  :o:  |  :o:  |
 
+![circo graph of format support](formats.png)
 
 ## Installation
 
