@@ -1,19 +1,28 @@
-/* j -- (C) 2013-present  SheetJS -- http://sheetjs.com */
+/* j (C) 2013-present SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
-/*jshint loopfunc:true, eqnull:true, mocha:true */
+/*jshint mocha:true */
+/*global process, require */
+/*::
+declare type EmptyFunc = (() => void) | null;
+declare type DescribeIt = { (desc:string, test:EmptyFunc):void; skip(desc:string, test:EmptyFunc):void; };
+declare var describe : DescribeIt;
+declare var it: DescribeIt;
+declare var before:(test:EmptyFunc)=>void;
+declare var cptable: any;
+*/
 var J;
 var modp = './';
 var fs = require('fs'), assert = require('assert');
 describe('source',function(){it('should load',function(){J=require(modp);});});
 
-var opts = {cellNF:true};
+var opts = ({cellNF: true}/*:any*/);
 if(process.env.WTF) opts.WTF = true;
 var ex = [".xls",".xml",".xlsx",".xlsm",".xlsb",".csv",".slk",".dif",".txt"];
 if(process.env.FMTS) ex=process.env.FMTS.split(":").map(function(x){return x[0]==="."?x:"."+x;});
 var exp = ex.map(function(x){ return x + ".pending"; });
-function test_file(x) {	return ex.indexOf(x.slice(-4))>=0 || ex.indexOf(x.slice(-5))>=0 || exp.indexOf(x.slice(-12))>=0 || exp.indexOf(x.slice(-13))>=0; }
+function test_file(x){ return ex.indexOf(x.slice(-5))>=0||exp.indexOf(x.slice(-13))>=0 || ex.indexOf(x.slice(-4))>=0||exp.indexOf(x.slice(-12))>=0; }
 
-var files = (fs.existsSync('tests.lst') ? fs.readFileSync('tests.lst', 'utf-8').split("\n") : fs.readdirSync('test_files')).filter(test_file);
+var files = (fs.existsSync('tests.lst') ? fs.readFileSync('tests.lst', 'utf-8').split("\n").map(function(x) { return x.trim(); }) : fs.readdirSync('test_files')).filter(test_file);
 
 var dir = "./test_files/";
 var outdir = "./tmp/";
@@ -43,42 +52,42 @@ files.forEach(function(x) {
 
 		it('should round-trip XLSX', pending || nowrite ? null : function() {
 			fs.writeFileSync(outdir + _x + "__.xlsx", J.utils.to_xlsx(wb, {bookSST:true}));
-			var wbnew = J.readFile(outdir + _x + "__.xlsx", opts);
+			J.readFile(outdir + _x + "__.xlsx", opts);
 		});
 
 		it('should round-trip XLSB', pending || nowrite ? null : function() {
 			fs.writeFileSync(outdir + _x + "__.xlsb", J.utils.to_xlsb(wb, {bookSST:true}));
-			var wbnew = J.readFile(outdir + _x + "__.xlsb", opts);
+			J.readFile(outdir + _x + "__.xlsb", opts);
 		});
 
 		it.skip('should round-trip ODS', pending || nowrite || noods ? null : function() {
 			fs.writeFileSync(outdir + _x + "__.ods", J.utils.to_ods(wb));
-			var wbnew = J.readFile(outdir + _x + "__.ods", opts);
+			J.readFile(outdir + _x + "__.ods", opts);
 		});
 
 		it.skip('should round-trip FODS', pending || nowrite || noods ? null : function() {
 			fs.writeFileSync(outdir + _x + "__.fods", J.utils.to_fods(wb));
-			var wbnew = J.readFile(outdir + _x + "__.fods", opts);
+			J.readFile(outdir + _x + "__.fods", opts);
 		});
 
 		it('should round-trip BIFF2 XLS', pending || nowrite ? null : function() {
 			fs.writeFileSync(outdir + _x + "__.biff2", J.utils.to_biff2(wb));
-			var wbnew = J.read(fs.readFileSync(outdir + _x + "__.biff2"), opts);
+			J.read(fs.readFileSync(outdir + _x + "__.biff2"), opts);
 		});
 
 		it.skip('should round-trip DIF', pending || nowrite ? null : function() {
 			fs.writeFileSync(outdir + _x + "__.dif", J.utils.to_dif(wb)[wb[1].SheetNames[0]]);
-			var wbnew = J.readFile(outdir + _x + "__.dif", opts);
+			J.readFile(outdir + _x + "__.dif", opts);
 		});
 
 		it.skip('should round-trip SYLK', pending || nowrite ? null : function() {
 			fs.writeFileSync(outdir + _x + "__.slk", J.utils.to_sylk(wb)[wb[1].SheetNames[0]]);
-			var wbnew = J.readFile(outdir + _x + "__.slk", opts);
+			J.readFile(outdir + _x + "__.slk", opts);
 		});
 
-		it.skip('should round-trip socialcalc', pending || nowrite ? null : function() {
-			fs.writeFileSync(outdir + _x + "__.socialcalc", J.utils.to_socialcalc(wb)[wb[1].SheetNames[0]]);
-			var wbnew = J.readFile(outdir + _x + "__.socialcalc", opts);
+		it('should round-trip ETH', pending || nowrite ? null : function() {
+			fs.writeFileSync(outdir + _x + "__.eth", J.utils.to_socialcalc(wb)[wb[1].SheetNames[0]]);
+			J.readFile(outdir + _x + "__.eth", opts);
 		});
 	});
 });
@@ -90,11 +99,12 @@ var mfopts = opts;
 var mft = fs.readFileSync('multiformat.lst','utf-8').split("\n");
 var csv = true;
 mft.forEach(function(x) {
-	if(x[0]!="#") describe('MFT ' + x, function() {
-		var fil = {}, f = [], r = x.split(/\s+/);
+	if(x.charAt(0)!="#") describe('MFT ' + x, function() {
+		var f = [], r = x.split(/\s+/);
 		if(r.length < 3) return;
+		if(!fs.existsSync(dir + r[0] + r[1])) return;
 		it('should parse all', function() {
-			for(var j = 1; j != r.length; ++j) f[j-1] = J.readFile(dir + r[0] + r[j], mfopts);
+			for(var j = 1; j < r.length; ++j) f[j-1] = J.readFile(dir + r[0] + r[j], mfopts);
 		});
 		it('should have the same sheetnames', function() {
 			cmparr(f.map(function(x) { return x[1].SheetNames; }));
@@ -119,11 +129,9 @@ mft.forEach(function(x) {
 			});
 		} : null);
 	});
-	else {
-		x.split(/\s+/).forEach(function(w) { switch(w) {
-			case "no-csv": csv = false; break;
-			case "yes-csv": csv = true; break;
-		}});
-	}
-});
-});
+	else x.split(/\s+/).forEach(function(w) { switch(w) {
+		case "no-csv": csv = false; break;
+		case "yes-csv": csv = true; break;
+	}});
+}); });
+

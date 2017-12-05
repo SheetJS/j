@@ -8,7 +8,10 @@ CMDS=bin/j.njs
 HTMLLINT=
 
 TARGET=$(LIB).js
-UGLIFYOPTS=--support-ie8
+FLOWTARGET=$(LIB).js
+FLOWTGTS=$(TARGET) $(AUXTARGETS) $(AUXSCPTS)
+UGLIFYOPTS=--support-ie8 -m
+CLOSURE=/usr/local/lib/node_modules/google-closure-compiler/compiler.jar
 
 ## Main Targets
 
@@ -31,38 +34,51 @@ formats.png: formats.dot
 .PHONY: nexe
 nexe: j.exe ## Build nexe standalone executable
 
-j.exe: bin/j.njs
-	nexe -i $< -o $@ --flags
+j.exe: bin/j.njs j.js
+	tail -n+2 $< | sed 's#\.\./#./j#g' > nexe.js
+	nexe -i nexe.js -o $@
+	rm nexe.js
+
+.PHONY: pkg
+pkg: bin/j.njs j.js ## Build pkg standalone executable
+	pkg $<
 
 ## Testing
 
 .PHONY: test mocha
 test mocha: test.js ## Run test suite
-	mocha -R spec -t 30000
+	mocha -R spec -t 20000
 
 #*                      To run tests for one format, make test_<fmt>
+#*                      To run the core test suite, make test_misc
 TESTFMT=$(patsubst %,test_%,$(FMT))
 .PHONY: $(TESTFMT)
 $(TESTFMT): test_%:
 	FMTS=$* make test
 
-.PHONY: 2011
-2011:
-	./tests/open_excel_2011.sh
+.PHONY: travis
+travis: ## Run test suite with minimal output
+	mocha -R dot -t 30000
 
-.PHONY: numbers
-numbers:
-	./tests/open_numbers.sh
 
 ## Code Checking
 
+.PHONY: fullint
+fullint: lint old-lint flow ## Run all checks
+
 .PHONY: lint
-lint: $(TARGET) $(AUXTARGETS) ## Run jshint and jscs checks
+lint: $(TARGET) $(AUXTARGETS) ## Run eslint checks
+	@eslint --ext .js,.njs,.json,.html,.htm $(TARGET) $(AUXTARGETS) $(CMDS) $(HTMLLINT) package.json bower.json
+	if [ -e $(CLOSURE) ]; then java -jar $(CLOSURE) $(REQS) $(FLOWTARGET) --jscomp_warning=reportUnknownTypes >/dev/null; fi
+
+.PHONY: old-lint
+old-lint: $(TARGET) $(AUXTARGETS) ## Run jshint and jscs checks
 	@jshint --show-non-errors $(TARGET) $(AUXTARGETS)
 	@jshint --show-non-errors $(CMDS)
-	@jshint --show-non-errors package.json
+	@jshint --show-non-errors package.json test.js
 	@jshint --show-non-errors --extract=always $(HTMLLINT)
-	@jscs $(TARGET) $(AUXTARGETS)
+	@jscs $(TARGET) $(AUXTARGETS) test.js
+	if [ -e $(CLOSURE) ]; then java -jar $(CLOSURE) $(REQS) $(FLOWTARGET) --jscomp_warning=reportUnknownTypes >/dev/null; fi
 
 .PHONY: flow
 flow: lint ## Run flow checker
@@ -78,12 +94,17 @@ $(COVFMT): cov_%:
 	FMTS=$* make cov
 
 misc/coverage.html: $(TARGET) test.js
-	mocha --require blanket -R html-cov -t 30000 > $@
+	mocha --require blanket -R html-cov -t 20000 > $@
 
 .PHONY: coveralls
 coveralls: ## Coverage Test + Send to coveralls.io
-	mocha --require blanket --reporter mocha-lcov-reporter -t 30000 | node ./node_modules/coveralls/bin/coveralls.js
+	mocha --require blanket --reporter mocha-lcov-reporter -t 20000 | node ./node_modules/coveralls/bin/coveralls.js
 
+MDLINT=README.md
+.PHONY: mdlint
+mdlint: $(MDLINT) ## Check markdown documents
+	alex $^
+	mdspell -a -n -x -r --en-us $^
 
 .PHONY: help
 help:

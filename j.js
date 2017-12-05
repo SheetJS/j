@@ -1,118 +1,80 @@
 /* j -- (C) 2013-present  SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
 /*jshint node:true, eqnull:true */
-var XLSX = require('xlsx');
-var XLS = XLSX;
-var HARB = require('harb');
-var UTILS = XLSX.utils;
+var X = require('xlsx');
 
-var libs = [
-	["XLS", XLS],
-	["XLSX", XLSX],
-	["HARB", HARB]
-];
+var readFileSync = function(filename/*:string*/, options/*:any*/)/*:JWorkbook*/ { return [X, X.readFile(filename, options)]; };
+var read = function(data/*:any*/, options/*:any*/)/*:JWorkbook*/ { return [X, X.read(data, options)]; };
 
-var fs = require('fs');
-
-var is_xlsx = function(d) {
-	switch(d[0]) {
-		/* CFB container */
-		case 0xd0: return true;
-		/* XML container (assumed 2003/2004) */
-		case 0x3c: return true;
-		/* BIFF */
-		case 0x09: return true;
-		/* Zip container or plaintext */
-		case 0x50: return (d[1] == 0x4b && d[2] <= 0x10 && d[3] <= 0x10);
-		/* Unknown */
-		default: return false;
-	}
-}
-var readFileSync = function(filename, options) {
-	var f = fs.readFileSync(filename);
-	if(is_xlsx(f)) return [XLSX, XLSX.readFile(filename, options)];
-	else return [HARB, HARB.readFile(filename, options)];
-};
-
-var read = function(data, options) {
-	if(is_xlsx(data)) return [XLSX, XLSX.read(data, options)];
-	else return [HARB, HARB.read(data.toString(), options)];
-};
-
-function to_formulae(w) {
-	var XL = w[0], workbook = w[1];
-	if(!XL.utils.get_formulae) XL = XLSX;
+function to_formulae(w/*:JWorkbook*/) {
+	var workbook = w[1];
 	var result = {};
 	workbook.SheetNames.forEach(function(sheetName) {
-		var f = XL.utils.get_formulae(workbook.Sheets[sheetName]);
+		var f = X.utils.get_formulae(workbook.Sheets[sheetName]);
 		if(f.length > 0) result[sheetName] = f;
 	});
 	return result;
 }
 
-function to_json(w, raw) {
-	var XL = w[0], workbook = w[1];
-	if(!XL.utils.sheet_to_row_object_array) XL = XLSX;
+function to_json(w/*:JWorkbook*/, raw/*:?boolean*/) {
+	var workbook = w[1];
 	var result = {};
 	workbook.SheetNames.forEach(function(sheetName) {
-		var roa = XL.utils.sheet_to_row_object_array(workbook.Sheets[sheetName], typeof raw == "object" ? raw : {raw:raw});
+		var roa = X.utils.sheet_to_json(workbook.Sheets[sheetName], typeof raw == "object" ? raw : {raw:raw});
 		if(roa.length > 0) result[sheetName] = roa;
 	});
 	return result;
 }
 
-function to_dsv(w, FS, RS) {
-	var XL = w[0], workbook = w[1];
-	if(!XL.utils.make_csv) XL = XLSX;
+function to_dsv(w/*:JWorkbook*/, FS/*:?string*/, RS/*:?string*/) {
+	var workbook = w[1];
 	var result = {};
 	workbook.SheetNames.forEach(function(sheetName) {
-		var csv = XL.utils.make_csv(workbook.Sheets[sheetName], {FS:FS||",",RS:RS||"\n"});
+		var csv = X.utils.make_csv(workbook.Sheets[sheetName], {FS:FS||",",RS:RS||"\n"});
 		if(csv.length > 0) result[sheetName] = csv;
 	});
 	return result;
 }
 
-function get_cols(sheet, XL) {
-	var val, r, hdr, R, C, _XL = XL || XLS;
-	if(!_XL.utils.format_cell) _XL = XLSX;
+function get_cols(sheet/*:Worksheet*/) {
+	var val, r, hdr, R, C;
 	hdr = [];
 	if(!sheet["!ref"]) return hdr;
-	r = _XL.utils.decode_range(sheet["!ref"]);
+	r = X.utils.decode_range(sheet["!ref"]);
 	for (R = r.s.r, C = r.s.c; C <= r.e.c; ++C) {
-		val = sheet[_XL.utils.encode_cell({c:C, r:R})];
+		val = sheet[X.utils.encode_cell({c:C, r:R})];
 		if(val == null) continue;
-		hdr[C] = val.w !== undefined ? val.w : _XL.utils.format_cell ? _XL.utils.format_cell(val) : val.v;
+		hdr[C] = val.w !== undefined ? val.w : X.utils.format_cell ? X.utils.format_cell(val) : val.v;
 	}
 	return hdr;
 }
 
-function to_md(w) {
-	var XL = w[0], wb = w[1];
-	if(!XL.utils.format_cell) XL = XLSX;
+function to_md(w/*:JWorkbook*/) {
+	var wb = w[1];
 	var tbl = {};
 	wb.SheetNames.forEach(function(sheet) {
 		var ws = wb.Sheets[sheet];
 		if(ws["!ref"] == null) return;
 		var src = "|", val, w;
-		var range = XL.utils.decode_range(ws["!ref"]);
+		var range = X.utils.decode_range(ws["!ref"]);
 		var R = range.s.r, C;
 		for(C = range.s.c; C <= range.e.c; ++C) {
-			val = ws[XL.utils.encode_cell({c:C,r:R})];
-			w = val == null ? "" : val.w !== undefined ? val.w : XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
+			val = ws[X.utils.encode_cell({c:C,r:R})];
+			w = val == null ? "" : val.w !== undefined ? val.w : X.utils.format_cell ? X.utils.format_cell(val) : val.v;
 			src += w + "|";
 		}
 		src += "\n|";
 		for(C = range.s.c; C <= range.e.c; ++C) {
-			val = ws[XL.utils.encode_cell({c:C,r:R})];
-			w = val == null ? "" : val.w !== undefined ? val.w : XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
+			val = ws[X.utils.encode_cell({c:C,r:R})];
+			w = val == null ? "" : val.w !== undefined ? val.w : X.utils.format_cell ? X.utils.format_cell(val) : val.v;
 			src += " ---- |";
 		}
 		src += "\n";
 		for(R = range.s.r+1; R <= range.e.r; ++R) {
 			src += "|";
 			for(C = range.s.c; C <= range.e.c; ++C) {
-				val = ws[XL.utils.encode_cell({c:C,r:R})];
-				w = val == null ? "" : val.w !== undefined ? val.w : XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
+				val = ws[X.utils.encode_cell({c:C,r:R})];
+				w = val == null ? "" : val.w !== undefined ? val.w : X.utils.format_cell ? X.utils.format_cell(val) : val.v;
 				src += w + "|";
 			}
 			src += "\n";
@@ -122,22 +84,21 @@ function to_md(w) {
 	return tbl;
 }
 
-function to_html(w) {
-	var XL = w[0], wb = w[1];
-	if(!XL.utils.format_cell) XL = XLSX;
+function to_html(w/*:JWorkbook*/) {
+	var wb = w[1];
 	var tbl = {};
 	wb.SheetNames.forEach(function(sheet) {
 		var ws = wb.Sheets[sheet];
 		if(ws["!ref"] == null) return;
 		var src = "<h3>" + sheet + "</h3>";
-		var range = XL.utils.decode_range(ws["!ref"]);
+		var range = X.utils.decode_range(ws["!ref"]);
 		src += "<table>";
 		src += "<colgroup span=\"" + (range.e.c - range.s.c + 1) + "\"></colgroup>";
 		for(var R = range.s.r; R <= range.e.r; ++R) {
 			src += "<tr>";
 			for(var C = range.s.c; C <= range.e.c; ++C) {
-				var val = ws[XL.utils.encode_cell({c:C,r:R})];
-				var w = val == null ? "" : val.w !== undefined ? val.w : XL.utils.format_cell ? XL.utils.format_cell(val) : val.v;
+				var val = ws[X.utils.encode_cell({c:C,r:R})];
+				var w = val == null ? "" : val.w !== undefined ? val.w : X.utils.format_cell ? X.utils.format_cell(val) : val.v;
 				src += "<td>" + w + "</td>";
 			}
 			src += "</tr>";
@@ -148,12 +109,12 @@ function to_html(w) {
 	return tbl;
 }
 
-function to_html_cols(w) {
-	var XL = w[0], wb = w[1];
+function to_html_cols(w/*:JWorkbook*/) {
+	var wb = w[1];
 	var json = to_json(w);
 	var tbl = {};
 	wb.SheetNames.forEach(function(sheet) {
-		var cols = get_cols(wb.Sheets[sheet], XL);
+		var cols = get_cols(wb.Sheets[sheet]);
 		var src = "<h3>" + sheet + "</h3>";
 		src += "<table>";
 		src += "<thead><tr>";
@@ -177,21 +138,21 @@ var encodings = {
 	'&lt;': '<',
 	'&amp;': '&'
 };
-function evert(obj) {
+function evert(obj/*:Object*/)/*:Object*/ {
 	var o = {};
 	Object.keys(obj).forEach(function(k) { if(obj.hasOwnProperty(k)) o[obj[k]] = k; });
 	return o;
 }
 var rencoding = evert(encodings);
 var rencstr = "&<>'\"".split("");
-function escapexml(text){
+function escapexml(text/*:string*/)/*:string*/{
 	var s = text + '';
 	rencstr.forEach(function(y){s=s.replace(new RegExp(y,'g'), rencoding[y]);});
 	return s;
 }
 
 var cleanregex = /[^A-Za-z0-9_.:]/g;
-function to_xml(w) {
+function to_xml(w/*:JWorkbook*/) {
 	var json = to_json(w);
 	var lst = {};
 	w[1].SheetNames.forEach(function(sheet) {
@@ -209,68 +170,87 @@ function to_xml(w) {
 	return lst;
 }
 
-function to_xlsx_factory(t) {
-	return function(w, o) {
+function to_wb(t/*:string*/) {
+	return function(w/*:JWorkbook*/, o/*:any*/) {
 		o = o || {}; o.bookType = t;
 		if(o.bookSST === undefined) o.bookSST = true;
 		if(o.type === undefined) o.type = 'buffer';
-		return XLSX.write(w[1], o);
+		return X.write(w[1], o);
 	};
 }
 
-var to_xlsx = to_xlsx_factory('xlsx');
-var to_xlsm = to_xlsx_factory('xlsm');
-var to_xlsb = to_xlsx_factory('xlsb');
-var to_ods = to_xlsx_factory('ods');
-var to_fods = to_xlsx_factory('fods');
-var to_biff2 = to_xlsx_factory('biff2');
-
-function to_harb_factory(t) {
-	return function (w) {
+function to_ws(t/*:string*/) {
+	return function(w/*:JWorkbook*/, o/*:any*/) {
 		var workbook = w[1];
 		var result = {};
+		o = o || {}; o.bookType = t;
+		if(o.bookSST === undefined) o.bookSST = true;
+		if(o.type === undefined) o.type = 'buffer';
 		workbook.SheetNames.forEach(function(sheetName) {
-			var out = HARB.utils["sheet_to_" + t](workbook.Sheets[sheetName]);
-			result[sheetName] = out;
+			var ws = workbook.Sheets[sheetName];
+			if(!ws || !ws['!ref']) return;
+			o.sheet = sheetName;
+			try {
+				var out = X.write(workbook, o);
+				result[sheetName] = out;
+			} catch(e) { console.error(e); }
 		});
 		return result;
 	};
 }
 
-var to_dif = to_harb_factory('dif');
-var to_sylk = to_harb_factory('sylk');
-var to_socialcalc = to_harb_factory('socialcalc');
-
-
-var version = libs.map(function(x) { return x[0] + " " + x[1].version; }).join(" ; ");
+function util(t) {
+	return function(w/*:JWorkbook*/) {
+		var workbook = w[1];
+		var result = {};
+		workbook.SheetNames.forEach(function(sheetName) {
+			var ws = workbook.Sheets[sheetName];
+			if(!ws || !ws['!ref']) return;
+			try {
+				var out = X.utils["sheet_to_" + t](ws);
+				result[sheetName] = out;
+			} catch(e) { console.error(e); }
+		});
+		return result;
+	};
+}
 
 var utils = {
 	to_csv: to_dsv,
 	to_dsv: to_dsv,
 	to_xml: to_xml,
-	to_xlsx: to_xlsx,
-	to_xlsm: to_xlsm,
-	to_xlsb: to_xlsb,
-	to_ods: to_ods,
-	to_fods: to_fods,
-	to_biff2: to_biff2,
+	to_xlsx: to_wb('xlsx'),
+	to_xlsm: to_wb('xlsm'),
+	to_xlsb: to_wb('xlsb'),
+	to_ods: to_wb('ods'),
+	to_fods: to_wb('fods'),
+	to_biff2: to_ws('biff2'),
+	to_biff5: to_wb('biff5'),
+	to_biff8: to_wb('biff8'),
+	to_xlml: to_wb('xlml'),
+	to_xls: to_wb('biff8'),
+	to_dbf: to_ws('dbf'),
+	to_txt: to_ws('txt'),
+	to_rtf: to_ws('rtf'),
+	to_prn: to_ws('prn'),
 	to_json: to_json,
 	to_html: to_html,
 	to_html_cols: to_html_cols,
 	to_formulae: to_formulae,
 	to_md: to_md,
-	to_dif: to_dif,
-	to_sylk: to_sylk,
-	to_socialcalc: to_socialcalc,
+	to_dif: util('dif'),
+	to_sylk: util('slk'),
+	to_eth: util('eth'),
+	to_socialcalc: util('eth'),
 	get_cols: get_cols
 };
-var J = {
-	XLSX: XLSX,
-	XLS: XLS,
+var J = ({
+	XLSX: X,
+	XLS: X,
 	readFile:readFileSync,
 	read:read,
 	utils: utils,
-	version: version
-};
+	version: "XLSX " + X.version
+}/*:any*/);
 
 if(typeof module !== 'undefined') module.exports = J;

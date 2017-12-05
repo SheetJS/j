@@ -1,13 +1,18 @@
 # J
 
+NOTE: this library / tool is a relic from a time when the SheetJS Spreadsheet
+Parsing and Writing libraries were separate entities.  They have been unified in
+the [js-xlsx project](https://git.io/xlsx), [`xlsx` on NPM](http://npm.im/xlsx).
+New projects should be using that library directly.
+
 Simple data wrapper that attempts to wrap SheetJS libraries to provide a uniform
 way to access data from Excel and other spreadsheet files:
 
-- JS-XLS: [xlsjs on npm](http://npm.im/xlsjs)
-- JS-XLSX: [xlsx on npm](http://npm.im/xlsx)
-- JS-HARB: [harb on npm](http://npm.im/harb)
+- JS-XLSX: [`xlsx` on NPM](http://npm.im/xlsx)
+- JS-XLS: [`xlsjs` on NPM](http://npm.im/xlsjs)
+- JS-HARB: [`harb` on NPM](http://npm.im/harb)
 
-Excel files are parsed based on the content (not by filename).  For example, CSV
+Excel files are parsed based on the content (not by extension). For example, CSV
 files can be renamed to .XLS and excel will do the right thing.
 
 Supported Formats:
@@ -17,29 +22,31 @@ Supported Formats:
 | **Excel Worksheet/Workbook Formats**                         |:-----:|:-----:|
 | Excel 2007+ XML Formats (XLSX/XLSM)                          |  :o:  |  :o:  |
 | Excel 2007+ Binary Format (XLSB BIFF12)                      |  :o:  |  :o:  |
-| Excel 2003-2004 XML Format (XML "SpreadsheetML")             |  :o:  |       |
-| Excel 97-2004 (XLS BIFF8)                                    |  :o:  |       |
-| Excel 5.0/95 (XLS BIFF5)                                     |  :o:  |       |
+| Excel 2003-2004 XML Format (XML "SpreadsheetML")             |  :o:  |  :o:  |
+| Excel 97-2004 (XLS BIFF8)                                    |  :o:  |  :o:  |
+| Excel 5.0/95 (XLS BIFF5)                                     |  :o:  |  :o:  |
 | Excel 4.0 (XLS/XLW BIFF4)                                    |  :o:  |       |
 | Excel 3.0 (XLS BIFF3)                                        |  :o:  |       |
 | Excel 2.0/2.1 (XLS BIFF2)                                    |  :o:  |  :o:  |
 | **Excel Supported Text Formats**                             |:-----:|:-----:|
-| Delimiter-Separated Values (CSV/TSV/DSV)                     |  :o:  |  :o:  |
+| Delimiter-Separated Values (CSV/TXT)                         |  :o:  |  :o:  |
 | Data Interchange Format (DIF)                                |  :o:  |  :o:  |
 | Symbolic Link (SYLK/SLK)                                     |  :o:  |  :o:  |
-| Space-Delimited Text (PRN)                                   |  :o:  |       |
-| UTF-16 Unicode Text (TXT)                                    |  :o:  |       |
+| Lotus Formatted Text (PRN)                                   |  :o:  |  :o:  |
+| UTF-16 Unicode Text (TXT)                                    |  :o:  |  :o:  |
 | **Other Workbook/Worksheet Formats**                         |:-----:|:-----:|
 | OpenDocument Spreadsheet (ODS)                               |  :o:  |  :o:  |
 | Flat XML ODF Spreadsheet (FODS)                              |  :o:  |  :o:  |
 | Uniform Office Format Spreadsheet (标文通 UOS1/UOS2)         |  :o:  |       |
-| dBASE II/III/IV / Visual FoxPro (DBF)                        |  :o:  |       |
+| dBASE II/III/IV / Visual FoxPro (DBF)                        |  :o:  |  :o:  |
+| Lotus 1-2-3 (WKS/WK1/WK2/WK3/WK4/123)                        |  :o:  |       |
+| Quattro Pro Spreadsheet (WQ1/WQ2/WB1/WB2/WB3/QPW)            |  :o:  |       |
 | **Other Common Spreadsheet Output Formats**                  |:-----:|:-----:|
 | HTML Tables                                                  |  :o:  |  :o:  |
+| Rich Text Format tables (RTF)                                |       |  :o:  |
+| Ethercalc Record Format (ETH)                                |  :o:  |  :o:  |
 | Markdown Tables                                              |       |  :o:  |
-| **Other Output Formats**                                     |:-----:|:-----:|
 | XML Data (XML)                                               |       |  :o:  |
-| SocialCalc                                                   |  :o:  |  :o:  |
 
 ![circo graph of format support](formats.png)
 
@@ -55,13 +62,13 @@ $ npm install -g j
 var J = require('j');
 ```
 
-`J.readFile(filename)` opens the file specified by filename and returns an array
+`J.readFile(filename)` opens file specified by `filename` and returns an array
 whose first object is the parsing object (XLS or XLSX) and whose second object
 is the parsed file.
 
-`J.utils` has various helpers that expect an array like those from readFile:
+`J.utils` has various helpers that expect an array like those from `readFile`:
 
-| Format                                                   |   util helper     |
+| Format                                                   |  utility function |
 |:---------------------------------------------------------|:------------------|
 | Excel 2007+ XML Formats (XLSX/XLSM)                      | `to_xlsx/to_xlsm` |
 | Excel 2007+ Binary Format (XLSB BIFF12)                  | `to_xlsb`         |
@@ -74,7 +81,7 @@ is the parsed file.
 | HTML Tables                                              | `to_html`         |
 | Markdown Tables                                          | `to_md`           |
 | XML Data (XML)                                           | `to_xml`          |
-| SocialCalc                                               | `to_socialcalc`   |
+| Ethercalc Record Format (ETH)                            | `to_socialcalc`   |
 | JSON Row Objects                                         | `to_json`         |
 | List of Formulae                                         | `to_formulae`     |
 
@@ -91,7 +98,7 @@ $ j --help
 
     -h, --help               output usage information
     -V, --version            output the version number
-    -f, --file <file>        use specified file (- for stdin)
+    -f, --file <file>        use specified workbook (- for stdin)
     -s, --sheet <sheet>      print specified sheet (default first sheet)
     -N, --sheet-index <idx>  use specified sheet index (0-based)
     -p, --password <pw>      if file is encrypted, try with specified pw
@@ -101,27 +108,33 @@ $ j --help
     -M, --xlsm               emit XLSM to <sheetname> or <file>.xlsm
     -X, --xlsx               emit XLSX to <sheetname> or <file>.xlsx
     -Y, --ods                emit ODS  to <sheetname> or <file>.ods
+    -8, --xls                emit XLS  to <sheetname> or <file>.xls (BIFF8)
+    -5, --biff5              emit XLS  to <sheetname> or <file>.xls (BIFF5)
     -2, --biff2              emit XLS  to <sheetname> or <file>.xls (BIFF2)
+    -6, --xlml               emit SSML to <sheetname> or <file>.xls (2003 XML)
     -T, --fods               emit FODS to <sheetname> or <file>.fods (Flat ODS)
-    -S, --formulae           print formulae
+    -S, --formulae           emit list of values and formulae
     -j, --json               emit formatted JSON (all fields text)
     -J, --raw-js             emit raw JS object (raw numbers)
     -A, --arrays             emit rows as JS objects (raw numbers)
+    -H, --html               emit HTML to <sheetname> or <file>.html
+    -D, --dif                emit DIF  to <sheetname> or <file>.dif (Lotus DIF)
+    -U, --dbf                emit DBF  to <sheetname> or <file>.dbf (MSVFP DBF)
+    -K, --sylk               emit SYLK to <sheetname> or <file>.slk (Excel SYLK)
+    -P, --prn                emit PRN  to <sheetname> or <file>.prn (Lotus PRN)
+    -E, --eth                emit ETH  to <sheetname> or <file>.eth (Ethercalc)
+    -t, --txt                emit TXT  to <sheetname> or <file>.txt (UTF-8 TSV)
+    -r, --rtf                emit RTF  to <sheetname> or <file>.txt (Table RTF)
     -x, --xml                emit XML
-    -H, --html               emit HTML
     -m, --markdown           emit markdown table
-    -D, --dif                emit data interchange format (dif)
-    -K, --sylk               emit symbolic link (sylk)
-    -E, --socialcalc         emit socialcalc
     -F, --field-sep <sep>    CSV field separator
     -R, --row-sep <sep>      CSV row separator
     -n, --sheet-rows <num>   Number of rows to process (0=all rows)
     --sst                    generate shared string table for XLS* formats
     --compress               use compression when writing XLSX/M/B and ODS
-    --perf                   do not generate output
-    --all                    parse everything
+    --read                   read but do not generate output
+    --all                    parse everything; write as much as possible
     --dev                    development mode
-    --read                   read but do not print out contents
     -q, --quiet              quiet mode
 ```
 
@@ -144,9 +157,9 @@ Please consult the attached LICENSE file for details.  All rights not explicitly
 
 
 
-## Using J for diffing XLS/XLSB/XLSM/XLSX files
+## Using J for diffing spreadsheet files
 
-Using git textconv, you can use `J` to generate more meaningful diffs!
+Using `git textconv`, you can use `J` to generate more meaningful diffs!
 
 One-time configuration (`misc/gitdiff.sh`):
 

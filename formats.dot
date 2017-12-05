@@ -1,14 +1,6 @@
 digraph G {
-	graph [mindist=0.1]; 
+	graph [mindist=0.1];
 	csf [shape=doublecircle,label="Common\nSpreadsheet\nFormat\n(JS Object)"];
-	subgraph OUT {
-		node  [style=filled,color=lightgrey];
-		md    [label="MD\nTable"];
-		prn   [label="PRN\nText"];
-		txt   [label="UTF16\nText"];
-		xml   [label="XML\nData"];
-	}
-
 	subgraph XL {
 		node  [style=filled,color=green];
 		xlsx  [label="XLSX\nXLSM"];
@@ -21,63 +13,74 @@ digraph G {
 		xls8  [label="XLS\nBIFF8"];
 	}
 
-	subgraph OD {
-		node  [style=filled,color=yellow];
-		ods   [label="ODS"];
-		fods  [label="Flat\nODS"];
-		uos   [label="UOS\n标文通"];
-	}
-
 	subgraph OLD {
 		node  [style=filled,color=cyan];
+		ods   [label="ODS"];
+		fods  [label="FODS"];
+		uos   [label="UOS"];
 		html  [label="HTML\nTable"];
 		csv   [label="CSV"];
+		txt   [label="TXT\nUTF-16"];
 		dbf   [label="DBF"];
-		dif   [label="Visicalc\nDIF"];
-		slk   [label="Symbolic\nLink"];
-		sclc  [label="Social\ncalc"];
+		dif   [label="DIF"];
+		slk   [label="SYLK"];
+		prn   [label="PRN"];
+		rtf   [label="RTF"];
+		wk1   [label="WK1/2\n123"];
+		wk3   [label="WK3/4"];
+		wqb   [label="WQ*\nWB*"];
+		qpw   [label="QPW"];
+		eth   [label="ETH"];
+		md    [label="MD\nTable"];
+		xml   [label="XML\nData"];
 	}
 
-	subgraph JSXLSX {
+	subgraph WORKBOOK {
 		edge [color=blue];
 		csf -> xlsx
 		xlsx -> csf
 		csf -> xlsb
 		xlsb -> csf
+		csf -> xlml
 		xlml -> csf
-		xls2 -> csf
-		csf -> xls2
-		xls3 -> csf
-		xls4 -> csf
+		csf -> xls5
 		xls5 -> csf
+		csf -> xls8
 		xls8 -> csf
-		csf -> csv
 		ods -> csf
 		csf -> ods
 		fods -> csf
 		csf -> fods
 		uos -> csf
-		html -> csf
+		wk3 -> csf
+		qpw -> csf
 	}
-
-	subgraph JSHARB {
-		edge [color=magenta];
-		csf -> sclc
-		sclc -> csf
-		csv -> csf
-		dif -> csf
-		csf -> dif
+	subgraph WORKSHEET {
+		edge [color=aquamarine4];
+		xls2 -> csf
+		csf -> xls2
+		xls3 -> csf
+		xls4 -> csf
 		csf -> slk
 		slk -> csf
+		csf -> dif
+		wk1 -> csf
+		wqb -> csf
+		dif -> csf
+		csf -> rtf
 		prn -> csf
+		csf -> prn
+		csv -> csf
+		csf -> csv
 		txt -> csf
+		csf -> txt
 		dbf -> csf
-	}
-
-	subgraph J {
-		edge [color=red];
+		csf -> dbf
+		html -> csf
 		csf -> html
+		csf -> eth
+		eth -> csf
 		csf -> md
 		csf -> xml
-	}	
+	}
 }

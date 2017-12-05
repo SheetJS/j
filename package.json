@@ -1,6 +1,6 @@
 {
   "name": "j",
-  "version": "0.4.5",
+  "version": "1.0.0",
   "author": "sheetjs",
   "description": "CLI tool for working with spreadsheet files",
   "keywords": [ "excel", "xls", "xlsx", "xlsm", "xlsb", "ods", "dif", "csv", "sylk", "prn", "ods", "dbf", "office", "spreadsheet" ],
@@ -16,9 +16,7 @@
   "main": "./j",
   "dependencies": {
     "exit-on-epipe":"",
-    "xlsx": "~0.9.1",
-    "xlsjs": "~0.7.6",
-    "harb": "~0.1.1",
+    "xlsx": "",
     "concat-stream":"",
     "commander":""
   },
@@ -27,7 +25,7 @@
   },
   "repository": { "type":"git", "url":"https://github.com/SheetJS/j.git" },
   "scripts": {
-    "test": "make mocha"
+    "test": "make travis"
   },
   "config": {
     "blanket": {
